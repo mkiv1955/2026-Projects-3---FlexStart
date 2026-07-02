@@ -1,0 +1,3320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlexStart — Campus Gigs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="intro">
+  <div class="eyebrow">SSE3200 · MAGCN Prototype</div>
+  <h1>FlexStart — a campus-first home for student gig work.</h1>
+  <p>Phase 1 click-through built from the proposal's user flow: curated gigs, verified employers, in-app messaging, and a portable worker reputation — all scoped to Segment 1, student job-seekers.</p>
+  <div class="tag-row">
+    <span class="tag">10 sample gigs</span>
+    <span class="tag">Working favourites</span>
+    <span class="tag">Live apply &amp; chat</span>
+  </div>
+  <div class="screen-nav" id="screen-nav">
+    <button data-target="view-role" class="active"><span>Role Select</span><span class="num">00</span></button>
+    <button data-target="view-start"><span>Employee Start-up</span><span class="num">01</span></button>
+    <button data-target="view-login"><span>Welcome / Login</span><span class="num">02</span></button>
+    <button data-target="view-signup"><span>Sign-up</span><span class="num">03</span></button>
+    <button data-target="view-home"><span>Home / Gig Feed</span><span class="num">04</span></button>
+    <button data-target="view-search"><span>Search</span><span class="num">05</span></button>
+    <button data-target="view-detail"><span>Gig Detail</span><span class="num">06</span></button>
+    <button data-target="view-jobs"><span>Jobs Dashboard</span><span class="num">07</span></button>
+    <button data-target="view-applications"><span>My Applications</span><span class="num">08</span></button>
+    <button data-target="view-reviews"><span>My Reviews</span><span class="num">09</span></button>
+    <button data-target="view-favourites"><span>Favourites</span><span class="num">10</span></button>
+    <button data-target="view-reels"><span>Reels</span><span class="num">11</span></button>
+    <button data-target="view-messages"><span>Messages</span><span class="num">12</span></button>
+    <button data-target="view-chat"><span>Chat Room</span><span class="num">13</span></button>
+    <button data-target="view-emp-start"><span>Employer Start-up</span><span class="num">15</span></button>
+    <button data-target="view-emp-login"><span>Employer Login</span><span class="num">16</span></button>
+    <button data-target="view-emp-signup"><span>Employer Sign-up</span><span class="num">17</span></button>
+    <button data-target="view-emp-verify"><span>Employer Verification</span><span class="num">18</span></button>
+    <button data-target="view-emp-home"><span>Employer Dashboard</span><span class="num">19</span></button>
+    <button data-target="view-emp-events"><span>My Events</span><span class="num">20</span></button>
+    <button data-target="view-emp-ads"><span>Advertise / Subscription</span><span class="num">21</span></button>
+    <button data-target="view-emp-reels"><span>Employer Reels</span><span class="num">22</span></button>
+    <button data-target="view-emp-profile"><span>Employer Profile</span><span class="num">23</span></button>
+    <button data-target="view-showcase"><span>Student Showcase</span><span class="num">24</span></button>
+  </div>
+</div>
+
+<div class="phone-shell">
+  <div class="phone-screen">
+    <div class="notch"></div>
+    <div class="toast" id="toast"></div>
+
+    <!-- REEL PROFILE POPUP -->
+    <div class="reel-profile-popup" id="reelProfilePopup" onclick="if(event.target===this) closeReelProfile()">
+      <div class="popup-content">
+        <button class="popup-close" onclick="closeReelProfile()">✕</button>
+        <div class="popup-avatar" id="popup-avatar" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
+        <div class="popup-name" id="popup-name">Sarah M.</div>
+        <div class="popup-role" id="popup-role">Student · Showcaser</div>
+        <div style="display:flex; gap:8px; justify-content:center; margin-bottom:12px; flex-wrap:wrap;">
+          <span class="tag-pill verified">✅ Verified</span>
+          <span class="tag-pill founding-member">🏆 Founding Member</span>
+          <span class="tag-pill" id="popup-type-badge" style="background:var(--purple); color:#fff;">Showcaser</span>
+        </div>
+        <div style="border-top:1px solid var(--line); padding-top:12px;">
+          <div style="font-size:11px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;">Gigs &amp; Events</div>
+          <div id="popup-gigs-list"></div>
+        </div>
+        <button class="btn-primary" onclick="closeReelProfile()" style="margin-top:12px;">Close</button>
+      </div>
+    </div>
+
+    <!-- ===== 0. ROLE SELECT ===== -->
+    <div class="view active" id="view-role">
+      <div class="role-top">
+        <h1>Welcome to<br><span>FlexStart.</span></h1>
+        <p class="lead">Tell us who you are so we can set up the right experience.</p>
+      </div>
+      <div class="role-cards">
+        <div class="role-card" onclick="go('view-start')">
+          <div class="ric"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></div>
+          <div class="rtxt"><b>I'm a Student</b><span>Browse and apply to verified, schedule-friendly gigs</span></div>
+          <svg class="rchev" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+        <div class="role-card" onclick="go('view-emp-start')">
+          <div class="ric"><svg viewBox="0 0 24 24"><path d="M17 8h1.5a3.5 3.5 0 0 1 0 7H17"/><path d="M3 8h14v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><path d="M6 3v2M10 3v2M14 3v2"/></svg></div>
+          <div class="rtxt"><b>I'm an Employer</b><span>Post events, hire students &amp; promote your business</span></div>
+          <svg class="rchev" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 1. START (employee) ===== -->
+    <div class="view" id="view-start">
+      <div class="start-top">
+        <div class="start-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 11-13h-7l1-7z"/></svg>
+        </div>
+        <h1>Find gigs that fit<br><span>your timetable.</span></h1>
+        <p class="lead">Verified, schedule-friendly work near UPM — without the ghost posts and group-chat noise.</p>
+        <div class="start-stats">
+          <div class="start-stat">
+            <span class="num">600+</span>
+            <span class="label">Students onboard</span>
+          </div>
+          <div class="start-stat">
+            <span class="num">14-day</span>
+            <span class="label">Auto-expiry</span>
+          </div>
+          <div class="start-stat">
+            <span class="num">100%</span>
+            <span class="label">Verified gigs</span>
+          </div>
+        </div>
+      </div>
+      <div class="start-visual">
+        <div class="orbit-card c1">⚡ <b>Earn today</b> · flexible hours</div>
+        <div class="orbit-card c2">🎯 <b>No ghost jobs</b> · real posts only</div>
+      </div>
+      <div class="start-bottom">
+        <button class="btn-primary" onclick="go('view-login')">Get started →</button>
+        <button class="btn-ghost" style="width:100%; margin-top:10px; color:rgba(255,255,255,.8);" onclick="go('view-role')">← Not a student? Switch role</button>
+      </div>
+    </div>
+
+    <!-- ===== 2. LOGIN ===== -->
+    <div class="view" id="view-login">
+      <div class="auth-pad">
+        <button class="icon-btn" onclick="go('view-start')" style="margin-bottom:24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2>Welcome back 👋</h2>
+        <p class="sub">Log in to pick up where you left off.</p>
+        <div class="field"><label>Email</label><input id="login-email" type="email" placeholder="you@student.upm.edu.my"></div>
+        <div class="field"><label>Password</label><input id="login-pass" type="password" placeholder="••••••••"></div>
+        <button class="btn-primary" onclick="handleLogin()">Log in</button>
+        <div class="divider">or</div>
+        <button class="btn-secondary" onclick="go('view-signup')">Create a new account</button>
+      </div>
+    </div>
+
+    <!-- ===== 2B. SIGN UP (REDUCED TO EMAIL + PASSWORD) ===== -->
+    <div class="view" id="view-signup">
+      <div class="auth-pad" style="padding-bottom:30px;">
+        <button class="icon-btn" onclick="go('view-login')" style="margin-bottom:24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2>Join the community 🚀</h2>
+        <p class="sub">Start with just your email and password — complete your profile later.</p>
+        <div class="field"><label>Email</label><input id="signup-email" type="email" placeholder="you@student.upm.edu.my"></div>
+        <div class="field"><label>Password</label><input id="signup-pass" type="password" placeholder="••••••••"></div>
+        <button class="btn-primary" onclick="handleSignup()">Create account</button>
+        <div class="divider">or</div>
+        <button class="btn-secondary" onclick="go('view-login')">Back to login</button>
+      </div>
+    </div>
+
+    <!-- ===== 3. HOME / GIG FEED ===== -->
+    <div class="view" id="view-home">
+      <div class="screen-content">
+        <!-- TOP BAR -->
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand">Flex<span class="dot">·</span>Start</div>
+            <div class="topbar-right">
+              <button class="icon-btn" onclick="toast('No new notifications')">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+                <span class="badge-dot"></span>
+              </button>
+            </div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE-OUT PROFILE MENU -->
+        <div class="profile-slide-overlay" id="profileOverlay" onclick="toggleProfileSlide()"></div>
+        <div class="profile-slide" id="profileSlide">
+          <div class="slide-header">
+            <button class="slide-close" onclick="toggleProfileSlide()">✕</button>
+            <div class="slide-user">
+              <div class="slide-avatar" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
+              <div>
+                <div class="slide-name">Sarah M.</div>
+                <div class="slide-email">sarahm123@gmail.com</div>
+                <div class="slide-tags">
+                  <span>⭐ 4.8 ★</span>
+                  <span>🏆 Founding Member</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="slide-section-title">Account</div>
+            <div class="slide-item" onclick="go('view-profile'); toggleProfileSlide();">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+              Edit profile
+            </div>
+            <div class="slide-item" onclick="go('view-showcase'); toggleProfileSlide();">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13l-4 4-2-2"/></svg>
+              Student Showcase
+              <span class="badge" style="background:var(--purple);">Hire Students</span>
+            </div>
+          </div>
+          <div class="slide-footer">
+            <div class="slide-item logout" onclick="openLogoutConfirm('view-role'); toggleProfileSlide();">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+              Log out
+            </div>
+          </div>
+        </div>
+
+        <!-- SCROLLABLE CONTENT -->
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div class="search-bar" onclick="go('view-search')">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <span style="color:var(--ink-soft); font-size:13.5px;">Search gigs, e.g. "tutoring near campus"</span>
+            </div>
+
+            <div class="hero-carousel" id="heroCarousel">
+              <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=300&fit=crop&crop=center');">
+                <div class="overlay"></div>
+                <div class="content">
+                  <div class="eyebrow">🎓 Sponsored <span class="badge">Ad</span></div>
+                  <h3>Earn RM 15/hr · Campus Delivery</h3>
+                  <p>Flexible hours, own schedule — apply now!</p>
+                  <span class="hero-tag">🚀 8 spots left</span>
+                </div>
+              </div>
+              <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=300&fit=crop&crop=center');">
+                <div class="overlay"></div>
+                <div class="content">
+                  <div class="eyebrow">📚 Featured <span class="badge">Premium</span></div>
+                  <h3>MITC Bookfest — Floor Crew</h3>
+                  <p>RM 100/day · 5-9 Jul · Free lunch included</p>
+                  <span class="hero-tag">🔥 14 applicants</span>
+                </div>
+              </div>
+              <div class="hero-slide showcase-slide" onclick="go('view-showcase')" style="cursor:pointer;">
+                <div class="overlay" style="background:linear-gradient(135deg, rgba(124,58,237,.7), rgba(27,63,158,.7));"></div>
+                <div class="content">
+                  <div class="showcase-content">
+                    <div class="sc-icon">🌟</div>
+                    <div class="sc-body">
+                      <h3>Student Showcase</h3>
+                      <p>List your skills, set your rates — become a campus micro-entrepreneur</p>
+                    </div>
+                    <span class="sc-badge">Hire Students</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-dots" id="heroDots">
+                <span class="active" data-index="0"></span>
+                <span data-index="1"></span>
+                <span data-index="2"></span>
+              </div>
+            </div>
+
+            <div class="section-label">Recent posts <a onclick="go('view-search')">See all</a></div>
+            <div id="feed-list"></div>
+          </div>
+        </div>
+
+        <!-- STICKY BOTTOM NAV -->
+        <div class="bottom-nav" id="nav-home"></div>
+      </div>
+    </div>
+
+    <!-- ===== 4. SEARCH ===== -->
+    <div class="view" id="view-search">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">Search gigs</div>
+            <div class="topbar-right">
+              <button class="icon-btn" onclick="go('view-home')">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-slide-overlay" id="profileOverlay2" onclick="toggleProfileSlide()"></div>
+        <div class="profile-slide" id="profileSlide2" style="z-index:102;"></div>
+
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div style="display:flex; gap:10px; margin-bottom:14px;">
+              <div class="search-bar" style="flex:1;">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <input id="search-input" type="text" placeholder="Search by title, skill or location" oninput="renderSearch()">
+              </div>
+              <div class="filter-chip" onclick="go('view-filter')">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+              </div>
+            </div>
+            <div style="display:flex; gap:18px; margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:10px;">
+              <span id="sort-relevant" style="font-weight:700; font-size:13px; color:var(--blue); border-bottom:2px solid var(--blue); padding-bottom:10px; margin-bottom:-11px; cursor:pointer;" onclick="setSort('relevant')">Most relevant</span>
+              <span id="sort-recent" style="font-weight:600; font-size:13px; color:var(--ink-soft); cursor:pointer;" onclick="setSort('recent')">Most recent</span>
+            </div>
+            <div id="search-list"></div>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-search"></div>
+      </div>
+    </div>
+
+    <!-- ===== FILTER SHEET (WITH BACK BUTTON) ===== -->
+    <div class="view" id="view-filter" style="background:rgba(14,27,48,.45);">
+      <div class="sheet">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <button class="icon-btn" onclick="go('view-search')" style="border:none; background:var(--paper);">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span style="font-weight:600; font-size:16px;">Filters</span>
+          <div style="flex:1;"></div>
+          <button class="btn-ghost" onclick="clearFilters()" style="font-size:12px;">Clear all</button>
+        </div>
+        <div class="sheet-handle"></div>
+        <div class="section-label" style="margin-top:0;">Set filters</div>
+        <div class="field"><label>Category</label>
+          <select id="filter-category">
+            <option value="">All categories</option>
+            <option>Tutoring</option>
+            <option>F&amp;B / Retail</option>
+            <option>Events</option>
+            <option>Delivery</option>
+            <option>Repair &amp; Tech</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Location</label><input id="filter-location" placeholder="e.g. Serdang"></div>
+          <div class="field"><label>Min pay (RM/hr)</label><input id="filter-pay" placeholder="e.g. 10"></div>
+        </div>
+        <label style="font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; font-family:'JetBrains Mono',monospace; display:block; margin-bottom:8px;">Availability / Schedule</label>
+        <div class="chip-group" id="schedule-chips">
+          <span class="chip" data-val="Morning">🌅 Morning</span>
+          <span class="chip" data-val="Afternoon">☀️ Afternoon</span>
+          <span class="chip" data-val="Evening">🌙 Evening</span>
+          <span class="chip" data-val="Weekend">📅 Weekend</span>
+          <span class="chip" data-val="Weekday">📆 Weekday</span>
+          <span class="chip" data-val="Flexible">🔄 Flexible</span>
+        </div>
+        <label style="font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; font-family:'JetBrains Mono',monospace; display:block; margin-bottom:8px;">Job type</label>
+        <div class="chip-group" id="type-chips">
+          <span class="chip" data-val="Part-time">Part-time</span>
+          <span class="chip" data-val="Full-time">Full-time</span>
+          <span class="chip" data-val="Event gig">Event gigs</span>
+          <span class="chip" data-val="Freelance">Freelance</span>
+          <span class="chip" data-val="Remote">Remote</span>
+        </div>
+        <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+          <button class="btn-primary" onclick="applyFilters()">Apply filters</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 5. JOB DETAIL (WITH CAROUSEL) ===== -->
+    <div class="view" id="view-detail">
+      <div class="screen-content">
+        <div class="detail-hero" id="detail-hero-bg">
+          <div class="back-float" onclick="goBackFromDetail()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </div>
+          <div class="fav-float" id="detail-fav-btn" onclick="toggleFavCurrent()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg>
+          </div>
+          <div class="carousel-dots" id="carousel-dots"></div>
+        </div>
+        <div class="detail-scroll">
+          <div class="detail-card">
+            <h2 id="detail-title">—</h2>
+            <div class="org" id="detail-org">—</div>
+            <div class="stat-row">
+              <div class="stat-box"><div class="v" id="detail-rating">—</div><div class="l">Rating</div></div>
+              <div class="stat-box"><div class="v" id="detail-pay">—</div><div class="l">Payment</div></div>
+              <div class="stat-box"><div class="v" id="detail-date">—</div><div class="l">Date</div></div>
+            </div>
+            <div class="section-label bigger">About this gig</div>
+            <p class="body-text" id="detail-about">—</p>
+            <div class="section-label bigger">Job scope</div>
+            <p class="body-text" id="detail-scope">—</p>
+            <div class="section-label bigger">Reviews from past workers</div>
+            <div id="detail-reviews"></div>
+          </div>
+        </div>
+        <div class="sticky-cta">
+          <div class="icon-square" onclick="openChatFor(currentDetailId)">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.4A8.5 8.5 0 1 1 21 11.5z"/></svg>
+          </div>
+          <div class="icon-square" onclick="shareToWhatsApp()" style="background:#25D366; border-color:#25D366;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:24px;height:24px;filter:brightness(0) invert(1);" alt="WhatsApp">
+          </div>
+          <div class="icon-square report" onclick="go('view-report')" title="Report this gig">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          </div>
+          <button class="btn-primary" id="detail-apply-btn" onclick="openApplyForm()">Apply now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== APPLICATION FORM ===== -->
+    <div class="view" id="view-apply-form">
+      <div class="screen-content">
+        <div class="auth-pad" style="padding:46px 20px 18px;">
+          <button class="icon-btn" onclick="goBackFromDetail()" style="margin-bottom:18px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <h2>Complete your application</h2>
+          <p class="sub" id="apply-form-sub">Applying to —</p>
+          <div class="req-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01"/><circle cx="12" cy="12" r="9"/></svg>
+            <span>The employer will see this information to decide on your application — keep it accurate and up to date.</span>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad" style="padding-top:0;">
+            <div class="field"><label>Full name</label><input id="apply-name" value="Sarah M."></div>
+            <div class="field-row">
+              <div class="field"><label>Phone number</label><input id="apply-phone" placeholder="012-345 6789"></div>
+              <div class="field"><label>Year of study</label><input id="apply-year" placeholder="Year 2"></div>
+            </div>
+            <div class="field"><label>Availability</label><input id="apply-avail" placeholder="Weekends, evenings after 6pm"></div>
+            <div class="field"><label>Why do you want this job?</label><input id="apply-note" placeholder="Short note to the employer"></div>
+            <div class="section-label" style="margin-top:4px;">Required documents</div>
+            <div class="upload-drop" onclick="toast('Student ID attached: matric_card.pdf')">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+              <b>Upload Student ID (matric card)</b><span>Required · PDF or image, max 5MB</span>
+            </div>
+            <div class="upload-drop" onclick="toast('Resume attached: resume_sarah.pdf')">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+              <b>Upload Resume / CV</b><span>Optional but recommended · PDF, max 5MB</span>
+            </div>
+            <button class="btn-primary" onclick="submitApplication()">Submit application</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REPORT / FLAG SHEET ===== -->
+    <div class="view" id="view-report" style="background:rgba(14,27,48,.45);">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="section-label" style="margin-top:0;">Report this gig</div>
+        <p style="font-size:12.5px; color:var(--ink-soft); margin:-4px 0 16px;">Reported listings enter a 24-hour review queue. Thanks for helping keep FlexStart trustworthy.</p>
+        <div class="chip-group" id="report-reasons">
+          <span class="chip" data-val="Scam or fraud">Scam or fraud</span>
+          <span class="chip" data-val="Already filled">Already filled</span>
+          <span class="chip" data-val="Below minimum wage">Below minimum wage</span>
+          <span class="chip" data-val="Misleading info">Misleading info</span>
+          <span class="chip" data-val="Unpaid trial">Unpaid trial</span>
+          <span class="chip" data-val="Other">Other</span>
+        </div>
+        <div class="field"><label>Additional details (optional)</label><input id="report-notes" placeholder="Tell us more…"></div>
+        <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+          <button class="btn-primary" onclick="submitReport()">Submit report</button>
+          <button class="btn-ghost" onclick="goBackFromDetail()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 6. JOBS DASHBOARD ===== -->
+    <div class="view" id="view-jobs">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">Jobs</div>
+            <div class="topbar-right">
+              <button class="icon-btn" onclick="toast('Filter jobs — coming soon')">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-slide-overlay" id="profileOverlay3" onclick="toggleProfileSlide()"></div>
+        <div class="profile-slide" id="profileSlide3" style="z-index:102;"></div>
+
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div class="tile-grid">
+              <div class="tile" onclick="go('view-applications')">
+                <div class="tile-icon" style="background:linear-gradient(135deg, var(--blue), var(--blue-deep));"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+                <div class="tile-title">My Applications</div>
+                <div class="tile-sub" id="tile-app-count">0 in progress</div>
+              </div>
+              <div class="tile" onclick="go('view-reviews')">
+                <div class="tile-icon" style="background:linear-gradient(135deg, var(--yellow), var(--yellow-deep));"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-7z"/></svg></div>
+                <div class="tile-title">My Reviews</div>
+                <div class="tile-sub" id="tile-review-count">2 written</div>
+              </div>
+              <div class="tile" onclick="toast('1 job currently active')">
+                <div class="tile-icon" style="background:linear-gradient(135deg, var(--blue-deep), #0a2a73);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></div>
+                <div class="tile-title">My Jobs</div>
+                <div class="tile-sub">1 active</div>
+              </div>
+              <div class="tile" onclick="go('view-favourites')">
+                <div class="tile-icon" style="background:linear-gradient(135deg, #5B7FE0, var(--pink));"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+                <div class="tile-title">Favourites</div>
+                <div class="tile-sub" id="tile-fav-count">0 saved</div>
+              </div>
+            </div>
+
+            <!-- Active Jobs (moved to top) -->
+            <div class="section-label">Active Jobs</div>
+            <div class="gig-card" onclick="showDetail('kopidrop')">
+              <div class="gig-thumb" style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=200&h=200&fit=crop&crop=center');"></div>
+              <div class="gig-body">
+                <div class="gig-top"><span class="gig-title">Kopi Drop — Barista</span><span class="status-pill status-accepted">Active</span></div>
+                <div class="gig-meta">Started 14 Jun · Weekends</div>
+              </div>
+            </div>
+
+            <!-- My Showcase -->
+            <div class="section-label">My Showcase</div>
+            <div id="my-showcase-list"></div>
+
+            <!-- Hired Showcasers -->
+            <div class="section-label">Hired Showcasers</div>
+            <div id="my-hired-showcasers"></div>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-jobs"></div>
+      </div>
+    </div>
+
+    <!-- ===== 7. MY APPLICATIONS ===== -->
+    <div class="view" id="view-applications">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">Applications</div>
+            <div style="width:36px;"></div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad">
+            <p style="font-size:12.5px; color:var(--ink-soft); margin-top:0;">Your applications, tracked in real time.</p>
+            <div id="applications-list"></div>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-applications"></div>
+      </div>
+    </div>
+
+    <!-- ===== 8. FAVOURITES ===== -->
+    <div class="view" id="view-favourites">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">Favourites</div>
+            <div style="width:36px;"></div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div id="favourites-list"></div>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-favourites"></div>
+      </div>
+    </div>
+
+    <!-- ===== 8B. MY REVIEWS ===== -->
+    <div class="view" id="view-reviews">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">My Reviews</div>
+            <div style="width:36px;"></div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div class="overview-card">
+              <div class="overview-stats" style="margin-bottom:14px;">
+                <div class="ov-stat"><div class="n" id="rv09-avg">—</div><div class="l">Avg ★</div></div>
+                <div class="ov-stat"><div class="n" id="rv09-count">—</div><div class="l">Reviews</div></div>
+                <div class="ov-stat"><div class="n" id="rv09-flagged">—</div><div class="l">Flagged</div></div>
+              </div>
+              <div class="bar-chart" id="rv09-bar-chart"></div>
+            </div>
+            <div class="section-label">From students who worked with you</div>
+            <div id="reviews-list"></div>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-reviews"></div>
+      </div>
+    </div>
+
+    <!-- ===== EDIT REVIEW SHEET ===== -->
+    <div class="view" id="view-edit-review" style="background:rgba(14,27,48,.45);">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="section-label" style="margin-top:0;" id="edit-review-title">Edit review</div>
+        <label style="font-size:10px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; font-family:'JetBrains Mono',monospace; display:block; margin-bottom:8px;">Rating</label>
+        <div class="chip-group" id="edit-review-stars">
+          <span class="chip" data-val="1">★</span><span class="chip" data-val="2">★★</span><span class="chip" data-val="3">★★★</span><span class="chip" data-val="4">★★★★</span><span class="chip" data-val="5">★★★★★</span>
+        </div>
+        <div class="field"><label>Comment</label><input id="edit-review-text" placeholder="How was the gig?"></div>
+        <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+          <button class="btn-primary" onclick="saveReview()">Save changes</button>
+          <button class="btn-ghost" onclick="go('view-reviews')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REELS (employee — view only, no nav) ===== -->
+    <div class="view" id="view-reels">
+      <div class="reels-feed" id="reels-feed"></div>
+      <!-- Bottom nav removed for immersive experience -->
+    </div>
+
+    <!-- ===== MESSAGES ===== -->
+    <div class="view" id="view-messages">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">Messages</div>
+            <div style="width:36px;"></div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div class="msg-row" onclick="openChatFor('kopidrop')">
+              <div style="position:relative;">
+                <div class="avatar-circle" style="background:var(--blue-deep); background-image:url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                <span class="status-dot" style="background:#34C759;"></span>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div class="msg-name">Shawn C. — Kopi Drop</div>
+                <div class="msg-preview">Can you come in 30 mins early on Sat?</div>
+              </div>
+              <span class="unread-count">2</span>
+            </div>
+            <div class="msg-row" onclick="openChatFor('bookfest')">
+              <div style="position:relative;">
+                <div class="avatar-circle" style="background:#5B7FE0; background-image:url('https://randomuser.me/api/portraits/men/45.jpg');"></div>
+                <span class="status-dot" style="background:var(--yellow-deep);"></span>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div class="msg-name">Mark S. — MITC Bookfest</div>
+                <div class="msg-preview">Thanks for applying! Quick question —</div>
+              </div>
+            </div>
+            <div class="msg-row" onclick="openChatFor('addmaths')">
+              <div style="position:relative;">
+                <div class="avatar-circle" style="background:var(--blue); background-image:url('https://randomuser.me/api/portraits/women/68.jpg');"></div>
+                <span class="status-dot" style="background:#C3C9D6;"></span>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div class="msg-name">Add Maths Parent — Mrs. Tan</div>
+                <div class="msg-preview">You: Sure, I'm free on Thursdays</div>
+              </div>
+            </div>
+            <div class="msg-row" onclick="openChatFor('phonerepair')">
+              <div style="position:relative;">
+                <div class="avatar-circle" style="background:var(--yellow-deep); background-image:url('https://randomuser.me/api/portraits/men/75.jpg');"></div>
+                <span class="status-dot" style="background:#C3C9D6;"></span>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div class="msg-name">Pintar Phone Repair</div>
+                <div class="msg-preview">Sounds good, see you Monday!</div>
+              </div>
+              <span class="unread-count">1</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-messages"></div>
+      </div>
+    </div>
+
+    <!-- ===== CHAT (WITH WHATSAPP BRIDGE + EMOJI + ATTACHMENT) ===== -->
+    <div class="view" id="view-chat">
+      <div class="screen-content">
+        <div class="chat-header">
+          <button class="icon-btn" onclick="go('view-messages')">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div style="position:relative;">
+            <div class="avatar-circle" id="chat-avatar" style="background:var(--blue-deep); background-image:url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+            <span class="status-dot" style="background:#34C759;"></span>
+          </div>
+          <div>
+            <div style="font-weight:700; font-size:13.5px;" id="chat-name">Shawn C.</div>
+            <div style="font-size:11px; color:var(--blue); display:flex; align-items:center; gap:4px;">
+              <span style="width:6px;height:6px;background:#34C759;border-radius:50%; display:inline-block;"></span> Online
+            </div>
+          </div>
+        </div>
+
+        <!-- WHATSAPP BRIDGE -->
+        <div class="chat-wa-bridge">
+          <span>💬 Continue this conversation on WhatsApp</span>
+          <button onclick="openChatWhatsApp()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:16px;height:16px;filter:brightness(0) invert(1);" alt="WhatsApp">
+            Open
+          </button>
+        </div>
+
+        <div class="chat-area" id="chat-area"></div>
+        <div class="chat-input-bar">
+          <div class="input-row">
+            <input type="text" id="chat-input" placeholder="Type a message…" onkeydown="if(event.key==='Enter') sendMessage()">
+            <div class="chat-tools">
+              <button class="chat-tool-btn" onclick="insertEmoji('😊')" title="Emoji">😊</button>
+              <button class="chat-tool-btn" onclick="document.getElementById('file-input').click()" title="Attach file">📎</button>
+              <input type="file" id="file-input" style="display:none" onchange="attachFile(this)">
+              <button class="send-btn" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="file-preview-container" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- ===== 11. PROFILE PAGE ===== -->
+    <!-- ===================================================== -->
+    <div class="view" id="view-profile">
+      <div class="profile-head" style="padding-top:20px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <button class="icon-btn" onclick="toggleProfileSlide()" style="background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.2);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span style="font-weight:600; font-size:16px; color:#fff;">My Profile</span>
+          <div style="flex:1;"></div>
+          <button class="icon-btn" onclick="go('view-home')" style="background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.2);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="profile-avatar" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg'); background-size:cover; background-position:center;"></div>
+        <h2>Sarah M. <span class="founding-badge" style="font-size:10px; background:linear-gradient(135deg, #FFD700, #FFA500); color:#fff; padding:2px 10px; border-radius:100px; display:inline-block; margin-left:6px;">🏆 Founding Member</span></h2>
+        <p>sarahm123@gmail.com · UPM, Year 2</p>
+        <div class="rep-score">
+          <div class="n">4.8★</div>
+          <div class="l">Rep score</div>
+        </div>
+      </div>
+      <div class="scroll-area">
+        <div class="content-pad" style="padding-top:18px;">
+          <div class="section-label" style="margin-top:0;">Personal Information</div>
+          <div class="info-row" style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;">
+            <span style="color:var(--ink-soft);">Full Name</span>
+            <span style="font-weight:600;">Sarah Mohamed</span>
+          </div>
+          <div class="info-row" style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;">
+            <span style="color:var(--ink-soft);">Email</span>
+            <span style="font-weight:600;">sarahm123@gmail.com</span>
+          </div>
+          <div class="info-row" style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;">
+            <span style="color:var(--ink-soft);">Phone</span>
+            <span style="font-weight:600;">012-345 6789</span>
+          </div>
+          <div class="info-row" style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;">
+            <span style="color:var(--ink-soft);">Address</span>
+            <span style="font-weight:600;">Kolej 12, UPM Serdang</span>
+          </div>
+          <div class="info-row" style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;">
+            <span style="color:var(--ink-soft);">Year of Study</span>
+            <span style="font-weight:600;">Year 2</span>
+          </div>
+
+          <div class="section-label">Skills</div>
+          <div id="skills-row">
+            <span class="skill-chip">Customer service</span>
+            <span class="skill-chip">Basic design</span>
+            <span class="skill-chip">Tutoring</span>
+            <span class="skill-chip add" onclick="addSkill()">+ Add</span>
+          </div>
+
+          <div class="section-label">Education</div>
+          <div class="gig-card" style="cursor:default;">
+            <div class="gig-thumb" style="background:var(--blue-deep);"></div>
+            <div class="gig-body">
+              <div class="gig-title">B.Sc Computer Science</div>
+              <div class="gig-meta">Universiti Putra Malaysia · 2023–Present</div>
+            </div>
+          </div>
+
+          <div class="section-label">Experience</div>
+          <div class="gig-card" style="cursor:default;">
+            <div class="gig-thumb" style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=200&h=200&fit=crop&crop=center');"></div>
+            <div class="gig-body">
+              <div class="gig-title">Weekend Barista</div>
+              <div class="gig-meta">Kopi Drop · Apr 2026–Present</div>
+            </div>
+          </div>
+
+          <!-- My Showcase Services (if any) -->
+          <div class="section-label">My Showcase Services</div>
+          <div id="profile-showcase-services">
+            <p style="font-size:12px; color:var(--ink-soft);">You haven't listed any services yet.</p>
+          </div>
+
+          <div class="section-label">Documents</div>
+          <div class="profile-doc-card" onclick="toast('Viewing Student ID: matric_card.pdf')">
+            <span class="doc-icon">🪪</span>
+            <div class="doc-info">
+              <div class="doc-name">Student ID (Matric Card)</div>
+              <div class="doc-meta">PDF · 412 KB · Uploaded 2 Jan 2026</div>
+            </div>
+            <span class="doc-status uploaded">✅ Uploaded</span>
+          </div>
+          <div class="profile-doc-card" onclick="toast('Viewing Resume: Sarah_M_CV_2026.pdf')">
+            <span class="doc-icon">📄</span>
+            <div class="doc-info">
+              <div class="doc-name">Resume / CV</div>
+              <div class="doc-meta">PDF · 188 KB · Uploaded 15 Mar 2026</div>
+            </div>
+            <span class="doc-status uploaded">✅ Uploaded</span>
+          </div>
+          <div class="profile-doc-card" onclick="toast('Viewing Portfolio: sarah_portfolio.pdf')">
+            <span class="doc-icon">🎨</span>
+            <div class="doc-info">
+              <div class="doc-name">Portfolio</div>
+              <div class="doc-meta">PDF · 2.4 MB · Uploaded 20 Apr 2026</div>
+            </div>
+            <span class="doc-status uploaded">✅ Uploaded</span>
+          </div>
+          <div class="profile-doc-card" onclick="toast('No transcript uploaded yet')" style="opacity:0.6;">
+            <span class="doc-icon">📊</span>
+            <div class="doc-info">
+              <div class="doc-name">Academic Transcript</div>
+              <div class="doc-meta">Optional · PDF, max 5MB</div>
+            </div>
+            <span class="doc-status missing">⏳ Not uploaded</span>
+          </div>
+          <div class="cv-upload-area" onclick="toast('Upload new document dialog opened')">
+            <span class="cv-icon">📤</span>
+            <div class="cv-title">Upload New Document</div>
+            <div class="cv-sub">Add transcripts, certifications, or other supporting documents</div>
+          </div>
+
+          <div class="section-label">Account</div>
+          <div class="row-link" onclick="go('view-edit')">
+            <span class="left"><svg class="lead" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Edit profile</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+          <div class="row-link" onclick="go('view-showcase')">
+            <span class="left" style="color:var(--purple);"><svg class="lead" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13l-4 4-2-2"/></svg>Student Showcase</span>
+            <span style="font-size:9px; background:var(--purple); color:#fff; padding:2px 10px; border-radius:100px;">Hire Students</span>
+          </div>
+          <div class="row-link" onclick="openLogoutConfirm('view-role')">
+            <span class="left" style="color:var(--blue);"><svg class="lead" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Log out</span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EDIT PROFILE SHEET ===== -->
+    <div class="view" id="view-edit" style="background:rgba(14,27,48,.45);">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="section-label" style="margin-top:0;">Edit account</div>
+        <div class="field"><label>Name</label><input id="edit-name" value="Sarah M."></div>
+        <div class="field"><label>Email</label><input id="edit-email" value="sarahm123@gmail.com"></div>
+        <div class="field"><label>New password</label><input type="password" placeholder="Leave blank to keep current"></div>
+        <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+          <button class="btn-primary" onclick="saveProfile()">Confirm changes</button>
+          <button class="btn-ghost" onclick="go('view-profile')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- ===== 24. STUDENT SHOWCASE - WITH ONBOARDING ===== -->
+    <!-- ===================================================== -->
+    <div class="view" id="view-showcase">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">Student Showcase</div>
+            <div class="topbar-right">
+              <button class="icon-btn" onclick="go('view-showcase-list')" title="List your services">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <button class="icon-btn" onclick="go('view-home')">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div style="background:linear-gradient(135deg, var(--purple), var(--blue-deep)); padding:20px; border-radius:16px; color:#fff; margin-bottom:16px;">
+              <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:18px; margin:0 0 4px;">🌟 Student Showcase</h2>
+              <p style="font-size:12px; opacity:.85; margin:0;">Students offering services — hire them directly for your projects and events</p>
+            </div>
+
+            <!-- Search & Filter for Showcase -->
+            <div style="display:flex; gap:10px; margin-bottom:16px;">
+              <div class="search-bar" style="flex:1;">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <input id="showcase-search" type="text" placeholder="Search services or skills..." oninput="renderShowcaseProviders()">
+              </div>
+              <div class="filter-chip" onclick="toggleShowcaseFilter()" style="background:linear-gradient(135deg, var(--purple), var(--blue-deep));">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+              </div>
+            </div>
+            <div id="showcase-filter-chip-group" style="display:none; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+              <span class="chip" data-val="Design" onclick="toggleShowcaseChip(this)">Design</span>
+              <span class="chip" data-val="Tutoring" onclick="toggleShowcaseChip(this)">Tutoring</span>
+              <span class="chip" data-val="Photography" onclick="toggleShowcaseChip(this)">Photography</span>
+              <span class="chip" data-val="Delivery" onclick="toggleShowcaseChip(this)">Delivery</span>
+              <span class="chip" data-val="Tech Support" onclick="toggleShowcaseChip(this)">Tech Support</span>
+              <span class="chip" data-val="Event Help" onclick="toggleShowcaseChip(this)">Event Help</span>
+            </div>
+
+            <!-- ONBOARDING PROMPT -->
+            <div class="onboarding-prompt" id="onboarding-prompt">
+              <span class="op-icon">🚀</span>
+              <h3>Want to earn extra as a service provider?</h3>
+              <p>List your skills and get hired by students and employers alike. It's free and takes 2 minutes.</p>
+              <div class="op-buttons">
+                <button class="yes-btn" onclick="go('view-showcase-list')">Yes, I want to showcase!</button>
+                <button class="no-btn" onclick="dismissOnboarding()">Maybe later</button>
+              </div>
+            </div>
+
+            <!-- Available Services -->
+            <div class="section-label" style="margin:10px 0;">Available Services <a onclick="go('view-showcase-list')">List your service</a></div>
+            <div id="showcase-providers-list"></div>
+
+            <button class="btn-primary" onclick="go('view-showcase-list')" style="background:linear-gradient(135deg, var(--purple), var(--blue)); box-shadow:0 4px 20px rgba(124,58,237,.3);">
+              ✨ List Your Service — Start Earning
+            </button>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-showcase"></div>
+      </div>
+    </div>
+
+    <!-- ===== SHOWCASE LIST YOUR SERVICE (PENDING APPROVAL) ===== -->
+    <div class="view" id="view-showcase-list">
+      <div class="screen-content">
+        <div class="topbar">
+          <div class="topbar-logo-row">
+            <div class="brand" style="font-size:15px; -webkit-text-fill-color:var(--ink);">List Your Service</div>
+            <button class="icon-btn" onclick="go('view-showcase')">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="topbar-profile-row">
+            <div class="profile-avatar-small" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');" onclick="toggleProfileSlide()"></div>
+            <div class="profile-greeting">
+              <div class="greeting">Welcome back 👋</div>
+              <div class="name">Sarah M. <span class="badge">⭐ 4.8</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad">
+            <p style="font-size:13px; color:var(--ink-soft); margin:0 0 16px;">Set up your service profile. Your listing will be reviewed by our team before going live.</p>
+            
+            <div class="field"><label>Service Title</label><input id="service-title" placeholder="e.g. Graphic Design, Tutoring, Photography"></div>
+            <div class="field"><label>Service Category</label>
+              <select id="service-category">
+                <option>Tutoring</option>
+                <option>Design</option>
+                <option>Photography</option>
+                <option>Delivery</option>
+                <option>Tech Support</option>
+                <option>Event Help</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Hourly Rate (RM)</label><input id="service-rate" placeholder="25"></div>
+              <div class="field"><label>Availability</label>
+                <select id="service-availability">
+                  <option>Weekends</option>
+                  <option>Weekdays</option>
+                  <option>Evenings</option>
+                  <option>Flexible</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label>Description</label><input id="service-desc" placeholder="Tell people what you offer..."></div>
+            <div class="field"><label>Skills (comma separated)</label><input id="service-skills" placeholder="e.g. Photoshop, Communication, Leadership"></div>
+            
+            <div class="upload-drop" onclick="toast('Service image uploaded: service_preview.jpg')">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+              <b>Upload Service Image</b><span>Showcase your work · Optional</span>
+            </div>
+            
+            <div style="background:#FFF3DC; border:1px solid #FCDFAE; border-radius:12px; padding:12px 14px; margin-bottom:16px; display:flex; gap:10px; align-items:flex-start;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--emp-deep)" stroke-width="2" style="width:20px;height:20px;flex-shrink:0;margin-top:1px;"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+              <div><b style="font-size:12px;color:var(--ink);">Pending Review</b><span style="font-size:11px;color:var(--ink-soft);display:block;">Your service will be reviewed by our team to ensure it meets community guidelines. This usually takes 1-2 business days.</span></div>
+            </div>
+            
+            <button class="btn-primary" onclick="publishService()" style="background:linear-gradient(135deg, var(--purple), var(--blue)); box-shadow:0 4px 20px rgba(124,58,237,.3);">
+              Submit for Review →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SHOWCASE DETAIL PAGE ===== -->
+    <div class="view" id="view-showcase-detail">
+      <div class="screen-content">
+        <div class="showcase-detail-hero" id="showcase-detail-hero">
+          <div class="back-float" onclick="go('view-showcase')">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </div>
+          <div class="sd-content">
+            <div class="sd-name" id="sd-name">—</div>
+            <div class="sd-service" id="sd-service">—</div>
+            <div class="sd-meta">
+              <span id="sd-rate">—</span>
+              <span id="sd-rating">—</span>
+              <span id="sd-availability">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div class="detail-card" style="margin-top:-20px; border-radius:20px 20px 0 0; padding:20px; background:var(--card);">
+              <div class="section-label bigger">About this service</div>
+              <p class="body-text" id="sd-desc">—</p>
+              
+              <div class="section-label bigger">Skills</div>
+              <div id="sd-skills"></div>
+              
+              <div class="section-label bigger">Reviews</div>
+              <div id="sd-reviews"></div>
+              
+              <div class="section-label bigger">Contact</div>
+              <button class="btn-primary" onclick="bookShowcaseService()" style="background:linear-gradient(135deg, var(--purple), var(--blue)); box-shadow:0 4px 20px rgba(124,58,237,.3);">
+                📩 Book This Service
+              </button>
+              <button class="btn-secondary" onclick="openChatFor(currentShowcaseId)" style="margin-top:8px;">
+                💬 Message Provider
+              </button>
+              <!-- DUAL-ROLE CROSS-LINK -->
+              <div style="margin-top:12px; padding:12px; background:#E8F0FF; border-radius:12px; text-align:center;">
+                <span style="font-size:11px; color:var(--blue-deep); font-weight:600;">🔗 Also available for gig work</span>
+                <button class="btn-ghost" onclick="go('view-home')" style="display:block; margin-top:4px; font-size:12px;">View their worker profile →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav" id="nav-showcase-detail"></div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- =================  EMPLOYER FLOW  ===================== -->
+    <!-- ===================================================== -->
+
+    <!-- ===== EMP 1. START ===== -->
+    <div class="view" id="view-emp-start">
+      <div class="start-top">
+        <div class="start-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1.5a3.5 3.5 0 0 1 0 7H17"/><path d="M3 8h14v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><path d="M6 3v2M10 3v2M14 3v2"/></svg>
+        </div>
+        <h1>Hire reliable students,<br><span>fast and verified.</span></h1>
+        <p class="lead">Post events and shifts, manage applicants, and reach campus talent across UPM.</p>
+        <div class="start-stats">
+          <div class="start-stat">
+            <span class="num">120+</span>
+            <span class="label">Verified employers</span>
+          </div>
+          <div class="start-stat">
+            <span class="num">600+</span>
+            <span class="label">Students ready</span>
+          </div>
+          <div class="start-stat">
+            <span class="num">⭐ 4.8</span>
+            <span class="label">Avg rating</span>
+          </div>
+        </div>
+      </div>
+      <div class="start-visual">
+        <div class="orbit-card c1">📈 <b>Boosted posts</b> · 3x reach</div>
+        <div class="orbit-card c2">✅ <b>Verified only</b> · safe hiring</div>
+      </div>
+      <div class="start-bottom">
+        <button class="btn-emp" onclick="go('view-emp-login')">Get started →</button>
+        <button class="btn-ghost" style="width:100%; margin-top:10px; color:rgba(255,255,255,.85);" onclick="go('view-role')">← Not an employer? Switch role</button>
+      </div>
+    </div>
+
+    <!-- ===== EMP 2. LOGIN ===== -->
+    <div class="view" id="view-emp-login">
+      <div class="auth-pad">
+        <button class="icon-btn" onclick="go('view-emp-start')" style="margin-bottom:24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2>Employer login 🏢</h2>
+        <p class="sub">Log in to manage your events and applicants.</p>
+        <div class="field"><label>Work email</label><input id="emp-login-email" type="email" placeholder="hr@yourcompany.com"></div>
+        <div class="field"><label>Password</label><input id="emp-login-pass" type="password" placeholder="••••••••"></div>
+        <button class="btn-emp" onclick="handleEmpLogin()">Log in</button>
+        <div class="divider">or</div>
+        <button class="btn-secondary" onclick="go('view-emp-signup')">Register your business</button>
+      </div>
+    </div>
+
+    <!-- ===== EMP 2B. SIGN UP ===== -->
+    <div class="view" id="view-emp-signup">
+      <div class="auth-pad" style="padding-bottom:30px;">
+        <button class="icon-btn" onclick="go('view-emp-login')" style="margin-bottom:24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2>Register business 🚀</h2>
+        <p class="sub">Tell us about your company — we verify every employer before posting goes live.</p>
+        <div class="field"><label>Company / event organiser name</label><input id="emp-signup-company" placeholder="The Bookmark Co. Malaysia"></div>
+        <div class="field"><label>Contact person</label><input id="emp-signup-contact" placeholder="Mei Lin"></div>
+        <div class="field-row">
+          <div class="field"><label>SSM / Business reg. no.</label><input id="emp-signup-ssm" placeholder="202601012345"></div>
+          <div class="field"><label>Industry</label>
+            <select id="emp-signup-industry"><option>Retail / Events</option><option>F&amp;B</option><option>Logistics</option><option>Education</option><option>Other</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Work email</label><input id="emp-signup-email" type="email" placeholder="hr@yourcompany.com"></div>
+        <div class="field"><label>Password</label><input id="emp-signup-pass" type="password" placeholder="••••••••"></div>
+        <button class="btn-emp" onclick="handleEmpSignup()">Sign up</button>
+      </div>
+    </div>
+
+    <!-- ===== EMP 3. VERIFICATION PENDING ===== -->
+    <div class="view" id="view-emp-verify">
+      <div class="verify-hero">
+        <div class="vicon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h2>Verification in progress</h2>
+        <p>Our team reviews every employer manually to keep the campus community safe. This usually takes <b>1–2 business days</b>.</p>
+      </div>
+      <div class="verify-steps">
+        <div class="vstep done"><div class="vnum">✓</div><div><b>Account created</b><span>The Bookmark Co. Malaysia</span></div></div>
+        <div class="vstep done"><div class="vnum">✓</div><div><b>Documents submitted</b><span>SSM registration uploaded</span></div></div>
+        <div class="vstep"><div class="vnum">3</div><div><b>Developer review</b><span>Our team is checking your details</span></div></div>
+        <div class="vstep"><div class="vnum">4</div><div><b>Approved &amp; live</b><span>You can start posting events</span></div></div>
+      </div>
+      <div class="content-pad">
+        <div class="upload-drop" onclick="toast('Document re-uploaded')">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <b>Upload additional documents</b><span>SSM cert, business license, or event permit</span>
+        </div>
+        <button class="btn-emp" onclick="simulateApproval()">Simulate: developer approves me ✓</button>
+        <button class="btn-ghost" style="width:100%; margin-top:12px;" onclick="openLogoutConfirm('view-role')">Log out</button>
+      </div>
+    </div>
+
+    <!-- ===== EMP 4. HOME / DASHBOARD ===== -->
+    <div class="view" id="view-emp-home">
+      <div class="topbar">
+        <div class="topbar-logo-row">
+          <div><div style="font-size:11px; color:var(--ink-soft);">Welcome back,</div><div class="brand" style="-webkit-text-fill-color:var(--ink);">Bookmark Co.</div></div>
+          <div class="topbar-right">
+            <button class="icon-btn" onclick="toast('No new notifications')" style="position:relative;">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+              <span class="badge-dot"></span>
+            </button>
+            <span class="verify-badge approved" style="padding:3px 10px; font-size:9px;"><svg viewBox="0 0 24 24" fill="none" stroke="#1C8A4D" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Verified</span>
+          </div>
+        </div>
+        <div class="topbar-profile-row" onclick="toggleEmpProfileSlide()">
+          <div class="profile-avatar-small" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center'); border-color:var(--emp);"></div>
+          <div class="profile-greeting">
+            <div class="greeting">Welcome back 👋</div>
+            <div class="name">Bookmark Co. <span class="badge" style="background:var(--emp);">⭐ 4.6</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPLOYER SLIDE-OUT PROFILE -->
+      <div class="profile-slide-overlay" id="empProfileOverlay" onclick="toggleEmpProfileSlide()"></div>
+      <div class="profile-slide emp-slide" id="empProfileSlide">
+        <div class="slide-header" style="background:linear-gradient(135deg,var(--emp-deep),var(--emp));">
+          <button class="slide-close" onclick="toggleEmpProfileSlide()">✕</button>
+          <div class="slide-user">
+            <div class="slide-avatar" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center');"></div>
+            <div>
+              <div class="slide-name">The Bookmark Co.</div>
+              <div class="slide-email">hello@thebookmarkco.com.my</div>
+              <div class="slide-tags"><span>⭐ 4.6 ★</span><span>✅ Verified</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-body">
+          <div class="slide-section-title">Business</div>
+          <div class="slide-item" onclick="go('view-emp-profile'); toggleEmpProfileSlide();"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>View business profile</div>
+          <div class="slide-item" onclick="go('view-emp-events'); toggleEmpProfileSlide();"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>My events</div>
+          <div class="slide-item" onclick="go('view-emp-applicants'); toggleEmpProfileSlide();"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Applicants</div>
+          <div class="slide-item" onclick="go('view-emp-ads'); toggleEmpProfileSlide();"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 11l18-7-7 18-2-8-9-3z"/></svg>Advertise &amp; subscription</div>
+          <div class="slide-item" onclick="go('view-emp-reels'); toggleEmpProfileSlide();"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/></svg>My reels</div>
+          <div class="slide-item" onclick="go('view-emp-showcase'); toggleEmpProfileSlide();" style="border-left-color:var(--purple);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13l-4 4-2-2"/></svg>Student Showcase <span class="badge" style="background:var(--purple);">Hire</span></div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-item logout" onclick="openLogoutConfirm('view-role'); toggleEmpProfileSlide();"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Log out</div>
+        </div>
+      </div>
+
+      <div class="content-pad">
+        <div class="ads-banner" onclick="go('view-emp-ads')" style="cursor:pointer;"><div class="ab-eyebrow">Advertise</div><h3>Boost this event's reach</h3><p>Get featured on the student home feed from RM49/mo →</p></div>
+
+        <!-- Applications Overview with Pie Chart -->
+        <div class="section-label" style="margin-top:0;">Applications Overview</div>
+        <div class="overview-card">
+          <div class="overview-stats">
+            <div class="ov-stat"><div class="n" id="ov-total-apps">—</div><div class="l">Total</div></div>
+            <div class="ov-stat"><div class="n" id="ov-events">—</div><div class="l">Events</div></div>
+            <div class="ov-stat"><div class="n" id="ov-rating">—</div><div class="l">Avg rating</div></div>
+          </div>
+          <div class="donut-row">
+            <div class="donut" id="app-donut"><div class="dn"><b id="donut-center">—</b><span>applied</span></div></div>
+            <div class="legend" id="app-legend"></div>
+          </div>
+        </div>
+
+        <!-- Reviews Snapshot with Bar Chart -->
+        <div class="section-label">Reviews Snapshot</div>
+        <div class="overview-card" onclick="go('view-emp-reviews')" style="cursor:pointer;">
+          <div class="overview-stats" style="margin-bottom:14px;">
+            <div class="ov-stat"><div class="n" id="rv-avg">—</div><div class="l">Avg ★</div></div>
+            <div class="ov-stat"><div class="n" id="rv-count">—</div><div class="l">Reviews</div></div>
+            <div class="ov-stat"><div class="n" id="rv-flagged">—</div><div class="l">Flagged</div></div>
+          </div>
+          <div class="bar-chart" id="rv-bar-chart"></div>
+        </div>
+
+        <!-- Recent Applicants -->
+        <div class="section-label">Recent Applicants <a onclick="go('view-emp-applicants')">See all</a></div>
+        <div id="emp-recent-applicants"></div>
+      </div>
+      <div class="bottom-nav" id="enav-home"></div>
+    </div>
+
+    <!-- ===== EMP. ALL APPLICANTS ===== -->
+    <div class="view" id="view-emp-applicants">
+      <div class="topbar">
+        <div class="brand" style="-webkit-text-fill-color:var(--ink);">Applicants</div>
+        <div class="icon-btn" onclick="go('view-emp-home')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+      </div>
+      <div class="content-pad" id="emp-applicants-list"></div>
+      <div class="bottom-nav" id="enav-applicants"></div>
+    </div>
+
+    <!-- ===== EMP. APPLICANT DETAIL ===== -->
+    <div class="view" id="view-emp-applicant">
+      <div class="applicant-head">
+        <div class="ah-top">
+          <div class="icon-btn" style="background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.3);" onclick="go(applicantReturnView)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <span class="status-pill" id="appdet-status" style="background:rgba(255,255,255,.2); color:#fff;">—</span>
+        </div>
+        <div class="ah-row">
+          <div class="avatar-circle" id="appdet-avatar" style="width:50px;height:50px;font-size:16px; border:2px solid rgba(255,255,255,.4);">—</div>
+          <div><h2 id="appdet-name">—</h2><p id="appdet-applying">—</p></div>
+        </div>
+      </div>
+      <div class="content-pad" style="padding-top:18px; flex:1;">
+        <div class="section-label" style="margin-top:0;">Submitted application</div>
+        <div class="info-row"><span class="il">Email</span><span class="iv" id="appdet-email">—</span></div>
+        <div class="info-row"><span class="il">Phone</span><span class="iv" id="appdet-phone">—</span></div>
+        <div class="info-row"><span class="il">Availability</span><span class="iv" id="appdet-avail">—</span></div>
+        <div class="info-row"><span class="il">Year of study</span><span class="iv" id="appdet-year">—</span></div>
+        <div class="info-row"><span class="il">Applied</span><span class="iv" id="appdet-when">—</span></div>
+
+        <div class="section-label">Why they want this job</div>
+        <p class="body-text" id="appdet-note">—</p>
+
+        <div class="section-label">Skills</div>
+        <div id="appdet-skills"></div>
+
+        <div class="section-label">Uploaded documents</div>
+        <div class="doc-row"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><div class="dn">Student ID (matric card)<div class="ds">PDF · 412 KB</div></div></div>
+        <div class="doc-row"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><div class="dn">Resume / CV<div class="ds">PDF · 188 KB</div></div></div>
+      </div>
+      <div class="applicant-actions">
+        <button class="btn-reject" onclick="decideApplicant('rejected')">Reject</button>
+        <button class="btn-accept" onclick="decideApplicant('accepted')">Accept</button>
+        <button class="btn-primary" onclick="rateWorker()" style="background:linear-gradient(135deg, var(--yellow), var(--yellow-deep)); box-shadow:0 4px 20px rgba(253,161,2,.3);">⭐ Rate Worker</button>
+      </div>
+    </div>
+
+    <!-- ===== EMP. REVIEWS ===== -->
+    <div class="view" id="view-emp-reviews">
+      <div class="topbar">
+        <div class="brand" style="-webkit-text-fill-color:var(--ink);">My Reviews</div>
+        <div class="icon-btn" onclick="go('view-emp-home')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+      </div>
+      <div class="content-pad">
+        <div class="overview-card">
+          <div class="overview-stats" style="margin-bottom:14px;">
+            <div class="ov-stat"><div class="n" id="rv2-avg">—</div><div class="l">Avg ★</div></div>
+            <div class="ov-stat"><div class="n" id="rv2-count">—</div><div class="l">Reviews</div></div>
+            <div class="ov-stat"><div class="n" id="rv2-flagged">—</div><div class="l">Flagged</div></div>
+          </div>
+          <div class="bar-chart" id="rv2-bar-chart"></div>
+        </div>
+        <div class="section-label">From students who worked with you</div>
+        <div id="emp-reviews-list"></div>
+      </div>
+      <div class="bottom-nav" id="enav-reviews"></div>
+    </div>
+
+    <!-- ===== EMP 5. MY EVENTS (with tabs for Hire Showcasers) ===== -->
+    <div class="view" id="view-emp-events">
+      <div class="topbar">
+        <div class="brand" style="-webkit-text-fill-color:var(--ink);">Overview</div>
+        <div class="icon-btn" onclick="go('view-emp-home')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+      </div>
+      <div class="content-pad" style="position:relative; flex:1; overflow-y:auto;">
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+          <div class="tab active" onclick="switchEmpTab('events')">My Events</div>
+          <div class="tab" onclick="switchEmpTab('hire')">Hire Showcasers</div>
+          <div class="tab" onclick="switchEmpTab('hired')">Hired</div>
+          <div class="tab" onclick="switchEmpTab('reels')">My Reels</div>
+        </div>
+
+        <!-- Tab Content: My Events -->
+        <div class="tab-content active" id="tab-events">
+          <div id="emp-events-full-list"></div>
+        </div>
+
+        <!-- Tab Content: Hire Showcasers -->
+        <div class="tab-content" id="tab-hire">
+          <div style="display:flex; gap:10px; margin-bottom:16px;">
+            <div class="search-bar" style="flex:1;">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="emp-showcase-search" type="text" placeholder="Search showcase services..." oninput="renderEmpShowcaseProviders()">
+            </div>
+            <div class="filter-chip" onclick="toggleEmpShowcaseFilter()" style="background:linear-gradient(135deg, var(--purple), var(--blue-deep));">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            </div>
+          </div>
+          <div id="emp-showcase-filter-chips" style="display:none; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+            <span class="chip" data-val="Design" onclick="toggleEmpShowcaseChip(this)">Design</span>
+            <span class="chip" data-val="Tutoring" onclick="toggleEmpShowcaseChip(this)">Tutoring</span>
+            <span class="chip" data-val="Photography" onclick="toggleEmpShowcaseChip(this)">Photography</span>
+            <span class="chip" data-val="Delivery" onclick="toggleEmpShowcaseChip(this)">Delivery</span>
+            <span class="chip" data-val="Tech Support" onclick="toggleEmpShowcaseChip(this)">Tech Support</span>
+            <span class="chip" data-val="Event Help" onclick="toggleEmpShowcaseChip(this)">Event Help</span>
+          </div>
+          <div id="emp-showcase-providers-list"></div>
+        </div>
+
+        <!-- Tab Content: Hired Showcasers -->
+        <div class="tab-content" id="tab-hired">
+          <div id="emp-hired-showcasers-list"></div>
+        </div>
+        <!-- Tab Content: My Reels -->
+        <div class="tab-content" id="tab-reels">
+          <div class="reels-grid">
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>2.1k</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>1.4k</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>3.2k</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>892</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>1.1k</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1511578314322-379afb476865?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>745</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>2.6k</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>1.8k</span></div>
+            <div class="reel-cell" style="background-image:url('https://images.unsplash.com/photo-1561070791-2526d30994b5?w=220&h=380&fit=crop');" onclick="go('view-emp-reels')"><span class="rl-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="rl-views"><svg viewBox="0 0 24 24"><path d="M12 5c-7.5 0-11 7-11 7s3.5 7 11 7 11-7 11-7-3.5-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2"/></svg>967</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav" id="enav-events"></div>
+    </div>
+
+    <!-- ===== EMP 5B. ADD / EDIT EVENT SHEET ===== -->
+    <div class="view" id="view-emp-event-edit" style="background:rgba(14,27,48,.45);">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="section-label" style="margin-top:0;" id="event-edit-title">Add event</div>
+        <div class="field"><label>Event / job title</label><input id="ev-title" placeholder="Booth Keeper @ Bookfest KLCC"></div>
+        <div class="field-row">
+          <div class="field"><label>Pay (flat)</label><input id="ev-pay" placeholder="RM 150"></div>
+          <div class="field"><label>Pay / hr</label><input id="ev-payhr" placeholder="RM 12.50"></div>
+        </div>
+        <div class="field"><label>Location</label><input id="ev-location" placeholder="KLCC Convention Centre"></div>
+        <div class="field-row">
+          <div class="field"><label>Date</label><input id="ev-date" type="date"></div>
+          <div class="field"><label>Time</label><input id="ev-time" placeholder="9:30 AM – 10:00 PM"></div>
+        </div>
+        <div class="field"><label>Description</label><input id="ev-desc" placeholder="Greet visitors, manage stock, light retail work."></div>
+        <div class="field"><label>Status</label>
+          <select id="ev-status"><option value="live">Live — visible to students</option><option value="draft">Draft — hidden</option><option value="finished">Finished — ready for ratings</option></select>
+        </div>
+        <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+          <button class="btn-emp" onclick="saveEvent()">Save event</button>
+          <button class="btn-ghost" onclick="go('view-emp-events')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EMP 6. ADVERTISE / SUBSCRIPTION ===== -->
+    <div class="view" id="view-emp-ads">
+      <div class="topbar">
+        <div class="brand" style="-webkit-text-fill-color:var(--ink);">Advertise</div>
+        <div class="icon-btn" onclick="go('view-emp-home')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+      </div>
+      <div class="content-pad">
+        <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.6; margin:14px 0 18px;">Choose a plan to feature your events on the student home feed, search results, and Top Picks carousel.</p>
+
+        <div class="plan-card" data-plan="free" onclick="selectPlan('free')">
+          <div class="pname">Free</div>
+          <div class="pprice">RM0 <span>/ month</span></div>
+          <ul><li>Standard listing in search</li><li>Up to 2 active events</li><li>No featured placement</li></ul>
+        </div>
+
+        <div class="plan-card sel" data-plan="boost" onclick="selectPlan('boost')">
+          <div class="pbadge">Popular</div>
+          <div class="pname">Boost</div>
+          <div class="pprice">RM49 <span>/ month</span></div>
+          <ul><li>Featured in Top Picks carousel</li><li>Up to 10 active events</li><li>Priority in search results</li></ul>
+        </div>
+
+        <div class="plan-card" data-plan="premium" onclick="selectPlan('premium')">
+          <div class="pname">Premium</div>
+          <div class="pprice">RM99 <span>/ month</span></div>
+          <ul><li>Home banner placement</li><li>Unlimited active events</li><li>Reels promoted to all students</li><li>Verified gold badge</li></ul>
+        </div>
+
+        <button class="btn-emp" onclick="subscribePlan()">Subscribe — <span id="plan-confirm-price">RM49/mo</span></button>
+        <p style="font-size:10.5px; color:var(--ink-soft); text-align:center; margin-top:10px;">Cancel anytime. Billed monthly to your company card.</p>
+      </div>
+      <div class="bottom-nav" id="enav-ads"></div>
+    </div>
+
+    <!-- ===== EMP 7. REELS (upload allowed, no nav) ===== -->
+    <div class="view" id="view-emp-reels">
+      <div class="reels-feed" id="emp-reels-feed"></div>
+      <div class="reel-upload-fab" onclick="go('view-emp-reel-upload')">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+      <!-- Bottom nav removed for immersive experience -->
+    </div>
+
+    <!-- ===== EMP 7B. UPLOAD REEL SHEET ===== -->
+    <div class="view" id="view-emp-reel-upload" style="background:rgba(14,27,48,.45);">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="section-label" style="margin-top:0;">Upload a reel</div>
+        <div class="upload-drop" onclick="toast('Video selected: shift_vibe.mp4')">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          <b>Tap to select a video</b><span>MP4 or MOV, up to 60 seconds, max 100MB</span>
+        </div>
+        <div class="field"><label>Caption</label><input id="reel-caption" placeholder="A day in the life at our booth ✨"></div>
+        <div class="field"><label>Link to event (optional)</label>
+          <select id="reel-event-link"><option value="">No linked event</option></select>
+        </div>
+        <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+          <button class="btn-emp" onclick="publishReel()">Publish reel</button>
+          <button class="btn-ghost" onclick="go('view-emp-reels')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EMP 8. PROFILE (Editable with full info) ===== -->
+    <div class="view" id="view-emp-profile">
+      <div class="profile-head emp">
+        <div class="profile-avatar emp" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center'); background-size:cover; background-position:center;"></div>
+        <h2 id="emp-profile-name">The Bookmark Co.</h2>
+        <p id="emp-profile-email">hello@thebookmarkco.com.my · Retail / Events</p>
+        <span class="verify-badge approved" style="margin-top:10px; display:inline-flex;"><svg viewBox="0 0 24 24" fill="none" stroke="#1C8A4D" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Verified employer</span>
+        <div class="rep-score">
+          <div class="n">4.6★</div>
+          <div class="l">Employer rating</div>
+        </div>
+      </div>
+      <div class="scroll-area">
+        <div class="content-pad" style="padding-top:18px; padding-bottom:20px;">
+          <div class="section-label" style="margin-top:0;">Business Information</div>
+          
+          <div class="emp-profile-field">
+            <label>Company Name</label>
+            <input id="emp-edit-name" value="The Bookmark Co.">
+          </div>
+          
+          <div class="emp-profile-field">
+            <label>Email</label>
+            <input id="emp-edit-email" value="hello@thebookmarkco.com.my">
+          </div>
+          
+          <div class="emp-profile-field">
+            <label>Phone Number</label>
+            <input id="emp-edit-phone" value="+60 12-345 6789">
+          </div>
+          
+          <div class="emp-profile-field">
+            <label>Address</label>
+            <input id="emp-edit-address" value="KLCC Convention Centre, Kuala Lumpur">
+          </div>
+          
+          <div class="emp-profile-field">
+            <label>Website</label>
+            <input id="emp-edit-website" value="www.thebookmarkco.com.my">
+          </div>
+          
+          <div class="emp-profile-field">
+            <label>Social Media (Instagram)</label>
+            <input id="emp-edit-social" value="@thebookmarkco">
+          </div>
+          
+          <div class="emp-profile-field">
+            <label>About / Description</label>
+            <textarea id="emp-edit-desc" rows="3">A retail and events company specializing in book fairs, pop-up stores, and campus activations. We've been connecting with student talent since 2024.</textarea>
+          </div>
+          
+          <div class="emp-profile-field">
+            <label>Industry</label>
+            <input id="emp-edit-industry" value="Retail / Events">
+          </div>
+          
+          <button class="btn-emp" onclick="saveEmpProfile()" style="margin-top:10px;">Save Changes</button>
+          
+          <div class="section-label" style="margin-top:20px;">Documents</div>
+          <div class="profile-doc-card" onclick="toast('Viewing SSM Registration')">
+            <span class="doc-icon">📄</span>
+            <div class="doc-info">
+              <div class="doc-name">SSM Registration</div>
+              <div class="doc-meta">PDF · 512 KB · Uploaded 12 May 2026</div>
+            </div>
+            <span class="doc-status uploaded">✅ Uploaded</span>
+          </div>
+          <div class="profile-doc-card" onclick="toast('Viewing Business License')">
+            <span class="doc-icon">📄</span>
+            <div class="doc-info">
+              <div class="doc-name">Business License</div>
+              <div class="doc-meta">PDF · 234 KB · Uploaded 15 May 2026</div>
+            </div>
+            <span class="doc-status uploaded">✅ Uploaded</span>
+          </div>
+          <div class="cv-upload-area" onclick="toast('Upload new document dialog opened')">
+            <span class="cv-icon">📤</span>
+            <div class="cv-title">Upload New Document</div>
+            <div class="cv-sub">Add business permits, insurance, or other documents</div>
+          </div>
+          
+          <div class="section-label" style="margin-top:20px;">Account</div>
+          <div class="row-link" onclick="go('view-emp-ads')">
+            <span class="left"><svg class="lead" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 11l18-7-7 18-2-8-9-3z"/></svg>Subscription &amp; billing</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+          <div class="row-link" onclick="openLogoutConfirm('view-role')">
+            <span class="left" style="color:var(--emp-deep);"><svg class="lead" viewBox="0 0 24 24" fill="none" stroke="var(--emp-deep)" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Log out</span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav" id="enav-profile"></div>
+    </div>
+
+    <!-- ===== GLOBAL: LOGOUT CONFIRM MODAL ===== -->
+    <div class="modal-overlay" id="logout-modal">
+      <div class="modal-box">
+        <div class="micon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></div>
+        <h3>Log out?</h3>
+        <p>You'll need to sign in again to access your account.</p>
+        <div class="modal-actions">
+          <button class="btn-secondary" onclick="closeLogoutConfirm()">No</button>
+          <button class="btn-danger" onclick="confirmLogout()">Yes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DELETE CONFIRM MODAL ===== -->
+    <div class="modal-overlay" id="delete-modal">
+      <div class="modal-box">
+        <div class="micon"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+        <h3>Are you sure?</h3>
+        <p>This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button class="btn-secondary" onclick="closeDeleteConfirm()">Cancel</button>
+          <button class="btn-danger" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ============== PROFILE SLIDE TOGGLE ==============
+function toggleProfileSlide() {
+  const slides = document.querySelectorAll('.profile-slide:not(.emp-slide)');
+  const overlays = document.querySelectorAll('.profile-slide-overlay:not(#empProfileOverlay)');
+  slides.forEach(s => s.classList.toggle('open'));
+  overlays.forEach(o => o.classList.toggle('open'));
+}
+
+function toggleEmpProfileSlide() {
+  document.getElementById('empProfileSlide').classList.toggle('open');
+  document.getElementById('empProfileOverlay').classList.toggle('open');
+}
+
+// ============== REEL PROFILE POPUP ==============
+function openReelProfile(org, type, isEmployerView) {
+  const popup = document.getElementById('reelProfilePopup');
+  const avatar = document.getElementById('popup-avatar');
+  const name = document.getElementById('popup-name');
+  const role = document.getElementById('popup-role');
+  const typeBadge = document.getElementById('popup-type-badge');
+  const gigsList = document.getElementById('popup-gigs-list');
+  
+  // Set profile info based on type
+  if (type === 'employer') {
+    const employerProfiles = {
+      'Bookmark Co.': { name: 'Bookmark Co.', role: 'Employer · Events & Retail', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center', verified: true, gigs: ['Booth Keeper @ Bookfest KLCC 2026', 'Volunteer @ Bookfest KLCC 2026'] },
+      'Kopi Drop': { name: 'Kopi Drop Café', role: 'Employer · F&B', image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=100&h=100&fit=crop&crop=center', verified: true, gigs: ['Weekend Barista', 'Campus Delivery Rider'] }
+    };
+    const profile = employerProfiles[org] || { name: org, role: 'Employer', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center', verified: false, gigs: ['Event Posting'] };
+    avatar.style.backgroundImage = `url('${profile.image}')`;
+    name.textContent = profile.name;
+    role.textContent = profile.role;
+    typeBadge.textContent = 'Employer';
+    typeBadge.style.background = 'var(--emp-deep)';
+    gigsList.innerHTML = profile.gigs.map(g => `
+      <div class="popup-gig-item" onclick="showDetail('${g.toLowerCase().replace(/\s+/g,'')}')">
+        <div class="gig-title">${g}</div>
+        <div class="gig-meta">Click to view details</div>
+      </div>
+    `).join('');
+  } else {
+    // Showcaser
+    const showcaserProfiles = {
+      'Sarah M.': { name: 'Sarah M.', role: 'Student · Graphic Designer', image: 'https://randomuser.me/api/portraits/women/44.jpg', verified: true, gigs: ['Graphic Design Services', 'Poster Design'] },
+      'Rizal A.': { name: 'Rizal A.', role: 'Student · Maths Tutor', image: 'https://randomuser.me/api/portraits/men/32.jpg', verified: false, gigs: ['Add Maths Tutoring', 'Physics Coaching'] },
+      'Farah I.': { name: 'Farah I.', role: 'Student · Photographer', image: 'https://randomuser.me/api/portraits/women/68.jpg', verified: false, gigs: ['Event Photography', 'Portrait Photography'] }
+    };
+    const profile = showcaserProfiles[org] || { name: org, role: 'Student · Showcaser', image: 'https://randomuser.me/api/portraits/men/45.jpg', verified: false, gigs: ['Showcase Service'] };
+    avatar.style.backgroundImage = `url('${profile.image}')`;
+    name.textContent = profile.name;
+    role.textContent = profile.role;
+    typeBadge.textContent = 'Showcaser';
+    typeBadge.style.background = 'var(--purple)';
+    gigsList.innerHTML = profile.gigs.map(g => `
+      <div class="popup-gig-item" onclick="go('view-showcase-detail')">
+        <div class="gig-title">${g}</div>
+        <div class="gig-meta">Click to view showcase</div>
+      </div>
+    `).join('');
+  }
+  
+  popup.classList.add('show');
+}
+
+function closeReelProfile() {
+  document.getElementById('reelProfilePopup').classList.remove('show');
+}
+
+// ============== WHATSAPP FUNCTIONS ==============
+function shareToWhatsApp() {
+  const g = GIGS.find(x => x.id === currentDetailId);
+  if(!g) return;
+  const msg = `Hey! Check out this gig on FlexStart: ${g.title} - ${g.pay} at ${g.location}. Apply now!`;
+  const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+  toast('Sharing to WhatsApp...');
+}
+
+function openChatWhatsApp() {
+  const thread = chatThreads[currentChatId];
+  const name = thread ? thread.name : 'FlexStart contact';
+  const msg = `Hi! I'm continuing our conversation about ${name} from FlexStart.`;
+  const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+  toast('Opening WhatsApp...');
+}
+
+// ============== CHAT EMOJI & ATTACHMENT ==============
+let attachedFile = null;
+
+function insertEmoji(emoji) {
+  const input = document.getElementById('chat-input');
+  input.value += emoji;
+  input.focus();
+}
+
+function attachFile(input) {
+  if(input.files && input.files[0]) {
+    attachedFile = input.files[0];
+    const container = document.getElementById('file-preview-container');
+    container.innerHTML = `<span class="file-preview">📎 ${attachedFile.name} <span class="remove-file" onclick="removeFile()">✕</span></span>`;
+    toast('File attached: ' + attachedFile.name);
+  }
+}
+
+function removeFile() {
+  attachedFile = null;
+  document.getElementById('file-preview-container').innerHTML = '';
+  document.getElementById('file-input').value = '';
+}
+
+function sendMessageWithFile() {
+  if(attachedFile) {
+    toast('📎 Sending file: ' + attachedFile.name);
+    attachedFile = null;
+    document.getElementById('file-preview-container').innerHTML = '';
+    document.getElementById('file-input').value = '';
+  }
+  sendMessage();
+}
+
+// ============== EMPLOYER PROFILE SAVE ==============
+function saveEmpProfile() {
+  const name = document.getElementById('emp-edit-name').value;
+  const email = document.getElementById('emp-edit-email').value;
+  
+  document.getElementById('emp-profile-name').textContent = name;
+  document.getElementById('emp-profile-email').textContent = email + ' · ' + document.getElementById('emp-edit-industry').value;
+  
+  toast('✅ Business profile updated successfully!');
+}
+
+// ============== DATA ==============
+const GIGS = [
+  { id:'bookfest', title:'MITC Bookfest — Floor Crew', org:'MITC Events Sdn Bhd · SSM verified', pay:'RM 100', payNum:12.5, rateLabel:'flat',
+    location:'MITC Hall · 1.2km from campus', date:'5 Jul', rating:'4.5★', 
+    images:['https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop&crop=center'],
+    tags:['Event gig'], category:'Events', schedule:['Weekend','Afternoon'],
+    about:'Help set up book displays, guide visitors, and assist with checkout during the weekend bookfest. Flexible 4-hour shifts available, no experience required — just reliability and a friendly attitude. Lunch and a goodie bag provided.',
+    scope:'Booth setup & teardown · Crowd guidance · Light inventory counts · Cash handling support',
+    reviews:[{name:'Sarah M.', stars:'★★★★★', color:'var(--blue)'},{name:'Aiman R.', stars:'★★★★☆', color:'var(--yellow-deep)'}] },
+
+  { id:'kopidrop', title:'Kopi Drop — Weekend Barista', org:'Kopi Drop Café · SSM verified', pay:'RM 12/hr', payNum:12, rateLabel:'hourly',
+    location:'Jalan Kajang · Part-time', date:'Ongoing', rating:'4.7★',
+    images:['https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop&crop=center'],
+    tags:['Weekends'], category:'F&B / Retail', schedule:['Weekend','Morning','Afternoon'],
+    about:'Join our weekend crew making coffee, taking orders, and keeping the counter running smoothly. Training provided on day one — no barista experience required, just a positive attitude and punctuality.',
+    scope:'Order taking · Basic latte art training · Till handling · Light cleaning duties',
+    reviews:[{name:'Daniel K.', stars:'★★★★★', color:'var(--blue-deep)'},{name:'Farah I.', stars:'★★★★★', color:'var(--blue)'}] },
+
+  { id:'addmaths', title:'Form 5 Add Maths Tutor', org:'Mrs. Tan (Private)', pay:'RM 35/hr', payNum:35, rateLabel:'hourly',
+    location:'Online / Seri Kembangan', date:'Flexible', rating:'5.0★',
+    images:['https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=300&fit=crop&crop=center'],
+    tags:['Remote'], category:'Tutoring', schedule:['Weekday','Evening','Flexible'],
+    about:'Looking for a patient, exam-savvy tutor for a Form 5 student preparing for SPM Additional Mathematics. Two sessions a week, online via Zoom, with materials provided.',
+    scope:'Weekly lesson planning · Past-year paper drilling · Progress updates to parent · Exam strategy coaching',
+    reviews:[{name:'Mrs. Tan', stars:'★★★★★', color:'var(--blue)'}] },
+
+  { id:'phonerepair', title:'Phone Repair Shop — Helper', org:'Pintar Phone Repair', pay:'RM 10/hr', payNum:10, rateLabel:'hourly',
+    location:'UPM Pintar Mall', date:'Ongoing', rating:'4.2★',
+    images:['https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=400&h=300&fit=crop&crop=center'],
+    tags:['Flexible'], category:'Repair & Tech', schedule:['Weekday','Afternoon'],
+    about:'General shop helper for a busy phone repair counter: greeting customers, logging repair tickets, and basic screen-protector installs. Great for students with an interest in consumer tech.',
+    scope:'Customer greeting · Repair ticket logging · Screen protector installs · Stock counting',
+    reviews:[{name:'Wei Jie', stars:'★★★★☆', color:'var(--blue-deep)'}] },
+
+  { id:'physics', title:'UPM Foundation — Physics Coach', org:'UPM Foundation Tuition Centre · SSM verified', pay:'RM 30/hr', payNum:30, rateLabel:'hourly',
+    location:'Faculty of Science block', date:'Evenings', rating:'4.6★',
+    images:['https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&h=300&fit=crop&crop=center'],
+    tags:['Evenings'], category:'Tutoring', schedule:['Weekday','Evening'],
+    about:'Small-group physics coaching for first-year foundation students struggling with mechanics and electromagnetism. Sessions run twice weekly in the evening, on-campus.',
+    scope:'Small group teaching (max 6) · Worked examples · Weekly quizzes · Office-hour Q&A',
+    reviews:[{name:'Nabil H.', stars:'★★★★★', color:'var(--blue)'},{name:'Chong Wei', stars:'★★★★☆', color:'var(--yellow-deep)'}] },
+
+  { id:'speaking', title:'English Speaking Practice — Kids', org:'Mdm. Aisyah (Private)', pay:'RM 25/hr', payNum:25, rateLabel:'hourly',
+    location:'Bandar Putra Permai', date:'Weekends', rating:'4.9★',
+    images:['https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop&crop=center'],
+    tags:['Weekends'], category:'Tutoring', schedule:['Weekend','Morning'],
+    about:'Fun, conversation-based English sessions for two primary school kids. Focus on confidence and vocabulary rather than grammar drills — games and storytelling encouraged.',
+    scope:'Conversational drills · Reading aloud · Vocabulary games · Light homework support',
+    reviews:[{name:'Mdm. Aisyah', stars:'★★★★★', color:'var(--blue)'}] },
+
+  { id:'eventcrew', title:'Career Fair — Registration Crew', org:'UPM Career Centre · SSM verified', pay:'RM 90', payNum:11, rateLabel:'flat',
+    location:'Dewan Besar UPM', date:'12 Jul', rating:'4.4★',
+    images:['https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop&crop=center'],
+    tags:['Event gig'], category:'Events', schedule:['Weekday','Afternoon'],
+    about:'One-day gig helping register attendees, distribute lanyards, and direct visitors at the annual UPM career fair. Free lunch and a certificate of participation included.',
+    scope:'Guest check-in · Lanyard distribution · Wayfinding support · Booth teardown',
+    reviews:[{name:'Hafiz A.', stars:'★★★★☆', color:'var(--blue-deep)'}] },
+
+  { id:'delivery', title:'Campus Food Delivery Rider', org:'Serdang Bites Collective', pay:'RM 8/run', payNum:9, rateLabel:'per run',
+    location:'UPM campus & nearby blocks', date:'Flexible', rating:'4.3★',
+    images:['https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&h=300&fit=crop&crop=center'],
+    tags:['Flexible'], category:'Delivery', schedule:['Flexible','Afternoon','Evening'],
+    about:'Deliver food orders between campus eateries and student housing on your own bike or scooter. Pick your own hours via the partner app — perfect for gaps between classes.',
+    scope:'Order pickup & drop-off · In-app status updates · Basic customer interaction',
+    reviews:[{name:'Iz Hafiz', stars:'★★★★☆', color:'var(--yellow-deep)'},{name:'Syafiq R.', stars:'★★★★★', color:'var(--blue)'}] },
+
+  { id:'bakery', title:'Dorm Bakery — Weekend Packer', org:'Sweet Studio by Amira', pay:'RM 11/hr', payNum:11, rateLabel:'hourly',
+    location:'Kolej 12, UPM', date:'Saturdays', rating:'4.8★',
+    images:['https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop&crop=center'],
+    tags:['Weekends'], category:'F&B / Retail', schedule:['Weekend','Morning'],
+    about:'Help a fellow student-run home bakery pack and label weekend orders for pickup and delivery. Light, friendly work — great if you enjoy being around good food.',
+    scope:'Order packing & labelling · Inventory checks · Light customer handover',
+    reviews:[{name:'Amira S.', stars:'★★★★★', color:'var(--blue)'}] },
+
+  { id:'design', title:'Freelance Poster Designer', org:'JAKMAS Student Council', pay:'RM 150', payNum:18, rateLabel:'flat',
+    location:'Remote', date:'By 20 Jul', rating:'4.6★',
+    images:['https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop&crop=center',
+            'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=300&fit=crop&crop=center'],
+    tags:['Freelance','Remote'], category:'Events', schedule:['Flexible','Weekday'],
+    about:'Design 3 promotional posters for an upcoming orientation week campaign. Brand guidelines and content will be provided — Canva or Figma both fine.',
+    scope:'Concept sketches · 3 final poster designs · One round of revisions · Source files handover',
+    reviews:[{name:'JAKMAS Council', stars:'★★★★★', color:'var(--blue-deep)'}] }
+];
+
+// ============== SHOWCASE PROVIDERS DATA ==============
+let showcaseProviders = [
+  { id:'sp1', name:'Sarah M.', service:'Graphic Design', rate:'RM 45/hr', rating:'⭐ 5.0', reviews:12, status:'published',
+    image:'https://randomuser.me/api/portraits/women/44.jpg', category:'Design', availability:'Flexible',
+    skills:['Photoshop','Illustrator','Figma'], desc:'Professional design services for posters, social media, and branding.' },
+  { id:'sp2', name:'Rizal A.', service:'SPM Add Maths Tutoring', rate:'RM 35/hr', rating:'⭐ 4.8', reviews:8, status:'published',
+    image:'https://randomuser.me/api/portraits/men/32.jpg', category:'Tutoring', availability:'Weekends',
+    skills:['Mathematics','Teaching','Patience'], desc:'Experienced tutor specializing in Add Maths for SPM students.' },
+  { id:'sp3', name:'Farah I.', service:'Event Photography', rate:'RM 80/session', rating:'⭐ 4.9', reviews:6, status:'published',
+    image:'https://randomuser.me/api/portraits/women/68.jpg', category:'Photography', availability:'Weekends',
+    skills:['Photography','Editing','Portraits'], desc:'Professional event photography for campus events and portraits.' },
+  { id:'sp4', name:'Nabil H.', service:'Campus Delivery Runner', rate:'RM 8/run', rating:'⭐ 4.7', reviews:23, status:'published',
+    image:'https://randomuser.me/api/portraits/men/45.jpg', category:'Delivery', availability:'Evenings',
+    skills:['Delivery','Customer Service','Punctual'], desc:'Fast and reliable delivery service across campus.' }
+];
+let userShowcaseServices = [];
+let showcaseFilter = [];
+let empShowcaseFilter = [];
+let hiredShowcasers = [];
+
+// ============== CAROUSEL ==============
+let currentSlide = 0;
+const totalSlides = 3;
+let carouselInterval;
+
+function initCarousel() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('#heroDots span');
+  
+  function goToSlide(index) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    currentSlide = index;
+  }
+  
+  function nextSlide() {
+    goToSlide((currentSlide + 1) % totalSlides);
+  }
+  
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      clearInterval(carouselInterval);
+      goToSlide(index);
+      carouselInterval = setInterval(nextSlide, 5000);
+    });
+  });
+  
+  carouselInterval = setInterval(nextSlide, 5000);
+}
+
+// ============== SHOWCASE FUNCTIONS ==============
+function dismissOnboarding() {
+  document.getElementById('onboarding-prompt').classList.add('hidden');
+  toast('You can always join later from the + button');
+}
+
+function toggleShowcaseFilter() {
+  const el = document.getElementById('showcase-filter-chip-group');
+  el.style.display = el.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function toggleShowcaseChip(el) {
+  el.classList.toggle('sel');
+  renderShowcaseProviders();
+}
+
+function toggleEmpShowcaseFilter() {
+  const el = document.getElementById('emp-showcase-filter-chips');
+  el.style.display = el.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function toggleEmpShowcaseChip(el) {
+  el.classList.toggle('sel');
+  renderEmpShowcaseProviders();
+}
+
+function getShowcaseFilter() {
+  const chips = document.querySelectorAll('#showcase-filter-chip-group .chip.sel');
+  return [...chips].map(c => c.dataset.val);
+}
+
+function getEmpShowcaseFilter() {
+  const chips = document.querySelectorAll('#emp-showcase-filter-chips .chip.sel');
+  return [...chips].map(c => c.dataset.val);
+}
+
+function renderShowcaseProviders() {
+  const container = document.getElementById('showcase-providers-list');
+  if(!container) return;
+  
+  const search = (document.getElementById('showcase-search')?.value || '').toLowerCase();
+  const filters = getShowcaseFilter();
+  
+  const allProviders = [...showcaseProviders.filter(p => p.status === 'published'), ...userShowcaseServices.filter(p => p.status === 'published')];
+  
+  let filtered = allProviders.filter(p => {
+    const matchSearch = p.name.toLowerCase().includes(search) || p.service.toLowerCase().includes(search) || p.skills.some(s => s.toLowerCase().includes(search));
+    const matchFilter = filters.length === 0 || filters.some(f => p.category === f);
+    return matchSearch && matchFilter;
+  });
+  
+  if(!filtered.length) {
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13l-4 4-2-2"/></svg>
+      <p>No services match your search.</p>
+    </div>`;
+    return;
+  }
+  
+  container.innerHTML = filtered.map(p => `
+    <div class="provider-card" onclick="showShowcaseDetail('${p.id}')">
+      <div class="pv-thumb" style="background-image:url('${p.image}');"></div>
+      <div class="pv-body">
+        <div class="pv-name">
+          ${p.name}
+          <span class="pv-badge">${p.category}</span>
+        </div>
+        <div class="pv-service">${p.service}</div>
+        <div class="pv-meta">
+          <span><b>${p.rate}</b></span>
+          <span>${p.rating} (${p.reviews} reviews)</span>
+          <span>🕐 ${p.availability}</span>
+        </div>
+        <div class="pv-tags">
+          ${p.skills.map(s => `<span>${s}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  renderProfileShowcaseServices();
+}
+
+function renderEmpShowcaseProviders() {
+  const container = document.getElementById('emp-showcase-providers-list');
+  if(!container) return;
+  
+  const search = (document.getElementById('emp-showcase-search')?.value || '').toLowerCase();
+  const filters = getEmpShowcaseFilter();
+  
+  const allProviders = [...showcaseProviders.filter(p => p.status === 'published'), ...userShowcaseServices.filter(p => p.status === 'published')];
+  
+  let filtered = allProviders.filter(p => {
+    const matchSearch = p.name.toLowerCase().includes(search) || p.service.toLowerCase().includes(search) || p.skills.some(s => s.toLowerCase().includes(search));
+    const matchFilter = filters.length === 0 || filters.some(f => p.category === f);
+    return matchSearch && matchFilter;
+  });
+  
+  if(!filtered.length) {
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13l-4 4-2-2"/></svg>
+      <p>No showscasers available.</p>
+    </div>`;
+    return;
+  }
+  
+  container.innerHTML = filtered.map(p => `
+    <div class="provider-card" onclick="hireShowcaser('${p.id}')">
+      <div class="pv-thumb" style="background-image:url('${p.image}');"></div>
+      <div class="pv-body">
+        <div class="pv-name">
+          ${p.name}
+          <span class="pv-badge">${p.category}</span>
+        </div>
+        <div class="pv-service">${p.service}</div>
+        <div class="pv-meta">
+          <span><b>${p.rate}</b></span>
+          <span>${p.rating} (${p.reviews} reviews)</span>
+          <span>🕐 ${p.availability}</span>
+        </div>
+        <div class="pv-tags">
+          ${p.skills.map(s => `<span>${s}</span>`).join('')}
+        </div>
+        <button class="btn-emp" style="margin-top:8px;padding:6px;font-size:11px;">📩 Hire Now</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function hireShowcaser(id) {
+  const allProviders = [...showcaseProviders, ...userShowcaseServices];
+  const p = allProviders.find(x => x.id === id);
+  if(!p) return;
+  
+  if(hiredShowcasers.some(h => h.id === id)) {
+    toast('Already hired this showcaser');
+    return;
+  }
+  
+  hiredShowcasers.push({
+    id: p.id,
+    name: p.name,
+    service: p.service,
+    rate: p.rate,
+    image: p.image,
+    hiredDate: new Date().toLocaleDateString()
+  });
+  
+  toast(`✅ ${p.name} hired for ${p.service}!`);
+  renderEmpHiredShowcasers();
+  renderMyHiredShowcasers();
+}
+
+function renderEmpHiredShowcasers() {
+  const container = document.getElementById('emp-hired-showcasers-list');
+  if(!container) return;
+  
+  if(!hiredShowcasers.length) {
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <p>No hired showscasers yet.<br>Browse the showcase and hire a student.</p>
+    </div>`;
+    return;
+  }
+  
+  container.innerHTML = hiredShowcasers.map(h => `
+    <div class="app-row" onclick="toast('View ${h.name}\'s profile')">
+      <div class="gig-thumb" style="width:44px;height:44px;background-image:url('${h.image}');"></div>
+      <div style="flex:1;">
+        <div style="font-weight:600; font-size:13.5px;">${h.name}</div>
+        <div style="font-size:11.5px; color:var(--ink-soft);">${h.service} · ${h.rate}</div>
+        <div style="font-size:10.5px; color:var(--ink-soft);">Hired: ${h.hiredDate}</div>
+      </div>
+      <span class="status-pill status-accepted">Active</span>
+    </div>
+  `).join('');
+}
+
+function renderMyHiredShowcasers() {
+  const container = document.getElementById('my-hired-showcasers');
+  if(!container) return;
+  
+  if(!hiredShowcasers.length) {
+    container.innerHTML = `<div class="empty-state" style="padding:20px;">
+      <p style="font-size:12px;">No hired showscasers yet.</p>
+    </div>`;
+    return;
+  }
+  
+  container.innerHTML = hiredShowcasers.map(h => `
+    <div class="app-row" onclick="toast('View ${h.name}\'s profile')">
+      <div class="gig-thumb" style="width:44px;height:44px;background-image:url('${h.image}');"></div>
+      <div style="flex:1;">
+        <div style="font-weight:600; font-size:13.5px;">${h.name}</div>
+        <div style="font-size:11.5px; color:var(--ink-soft);">${h.service} · ${h.rate}</div>
+        <div style="font-size:10.5px; color:var(--ink-soft);">Hired: ${h.hiredDate}</div>
+      </div>
+      <span class="status-pill status-accepted">Active</span>
+    </div>
+  `).join('');
+}
+
+function renderMyShowcaseServices() {
+  const container = document.getElementById('my-showcase-list');
+  if(!container) return;
+  
+  const userServices = userShowcaseServices;
+  if(!userServices.length) {
+    container.innerHTML = `<div class="empty-state" style="padding:20px;">
+      <p style="font-size:12px;">You haven't listed any services. <a onclick="go('view-showcase-list')" style="color:var(--purple);font-weight:700;cursor:pointer;">List your service →</a></p>
+    </div>`;
+    return;
+  }
+  
+  container.innerHTML = userServices.map(p => `
+    <div class="app-row" onclick="go('view-showcase-detail')">
+      <div class="gig-thumb" style="width:44px;height:44px;background-image:url('${p.image}');"></div>
+      <div style="flex:1;">
+        <div style="font-weight:600; font-size:13.5px;">${p.service}</div>
+        <div style="font-size:11.5px; color:var(--ink-soft);">${p.rate} · ${p.category}</div>
+      </div>
+      <span class="status-pill ${p.status === 'published' ? 'status-accepted' : 'status-pending-review'}">${p.status === 'published' ? 'Published' : 'Pending Review'}</span>
+    </div>
+  `).join('');
+}
+
+function renderProfileShowcaseServices() {
+  const container = document.getElementById('profile-showcase-services');
+  if(!container) return;
+  
+  const userServices = userShowcaseServices;
+  if(!userServices.length) {
+    container.innerHTML = `<p style="font-size:12px; color:var(--ink-soft);">You haven't listed any services yet. <a onclick="go('view-showcase-list')" style="color:var(--purple); font-weight:700; cursor:pointer;">List your first service →</a></p>`;
+    return;
+  }
+  
+  container.innerHTML = userServices.map(p => `
+    <div class="gig-card" style="border-left:3px solid ${p.status === 'published' ? 'var(--purple)' : 'var(--yellow-deep)'};">
+      <div class="gig-thumb" style="width:44px;height:44px;background-image:url('${p.image}');"></div>
+      <div class="gig-body">
+        <div class="gig-top">
+          <span class="gig-title">${p.service}</span>
+          <span class="gig-pay" style="color:${p.status === 'published' ? 'var(--purple)' : 'var(--yellow-deep)'};">${p.rate}</span>
+        </div>
+        <div class="gig-meta">${p.category} · ${p.availability}</div>
+        <div class="gig-tags">
+          <span class="tag-pill" style="background:${p.status === 'published' ? 'var(--purple)' : 'var(--yellow-deep)'}; color:#fff;">${p.status === 'published' ? 'Published' : 'Pending Review'}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showShowcaseDetail(id) {
+  currentShowcaseId = id;
+  const allProviders = [...showcaseProviders, ...userShowcaseServices];
+  const p = allProviders.find(x => x.id === id);
+  if(!p) return;
+  
+  document.getElementById('sd-name').textContent = p.name;
+  document.getElementById('sd-service').textContent = p.service;
+  document.getElementById('sd-rate').textContent = p.rate;
+  document.getElementById('sd-rating').textContent = p.rating + ' (' + p.reviews + ' reviews)';
+  document.getElementById('sd-availability').textContent = '🕐 ' + p.availability;
+  document.getElementById('sd-desc').textContent = p.desc;
+  document.getElementById('sd-skills').innerHTML = p.skills.map(s => `<span class="skill-chip">${s}</span>`).join('');
+  
+  document.getElementById('sd-reviews').innerHTML = p.reviews > 0 ? `
+    ${['Ahmad R.','Siti N.','Kevin T.'].slice(0, Math.min(p.reviews, 3)).map((name, i) => `
+      <div class="review-card" style="margin-bottom:8px;">
+        <div class="rc-top">
+          <div class="avatar-circle" style="background:${['var(--blue)','var(--purple)','var(--emp)'][i % 3]};"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div><div class="rc-name">${name}</div></div>
+          <div class="rc-stars">${'★'.repeat(5 - (i % 2)) + '☆'.repeat(i % 2)}</div>
+        </div>
+        <div class="rc-text">${['Amazing work!','Professional and easy to work with.','Great communication and quality work.'][i % 3]}</div>
+        <div class="rc-date">${['2 weeks ago','1 month ago','3 days ago'][i % 3]}</div>
+      </div>
+    `).join('')}
+  ` : '<p style="color:var(--ink-soft); font-size:13px;">No reviews yet. Be the first!</p>';
+  
+  go('view-showcase-detail');
+}
+
+function bookShowcaseService() {
+  const allProviders = [...showcaseProviders, ...userShowcaseServices];
+  const p = allProviders.find(x => x.id === currentShowcaseId);
+  toast(`✅ Booking request sent to ${p ? p.name : 'provider'}!`);
+}
+
+function publishService() {
+  const title = document.getElementById('service-title').value.trim();
+  const category = document.getElementById('service-category').value;
+  const rate = document.getElementById('service-rate').value.trim();
+  const availability = document.getElementById('service-availability').value;
+  const desc = document.getElementById('service-desc').value.trim();
+  const skillsInput = document.getElementById('service-skills').value.trim();
+  
+  if(!title) { toast('Please enter a service title'); return; }
+  if(!rate) { toast('Please enter your rate'); return; }
+  
+  const skills = skillsInput ? skillsInput.split(',').map(s => s.trim()) : ['General'];
+  
+  const newService = {
+    id:'user'+Date.now(),
+    name:'Sarah M.',
+    service:title,
+    rate:'RM '+rate+'/hr',
+    rating:'⭐ 5.0',
+    reviews:0,
+    status:'pending',
+    image:'https://randomuser.me/api/portraits/women/44.jpg',
+    category:category,
+    availability:availability,
+    skills:skills.slice(0,3),
+    desc:desc || 'Professional service offered by a UPM student.'
+  };
+  
+  userShowcaseServices.push(newService);
+  toast('✅ Service submitted for review! Our team will review it within 1-2 business days.');
+  renderShowcaseProviders();
+  renderMyShowcaseServices();
+  renderProfileShowcaseServices();
+  setTimeout(() => go('view-profile'), 500);
+}
+
+// ============== EMPLOYER TAB SWITCHING ==============
+function switchEmpTab(tab) {
+  document.querySelectorAll('#view-emp-events .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#view-emp-events .tab-content').forEach(t => t.classList.remove('active'));
+  
+  if(tab === 'events') {
+    document.querySelector('#view-emp-events .tab:first-child').classList.add('active');
+    document.getElementById('tab-events').classList.add('active');
+  } else if(tab === 'hire') {
+    document.querySelector('#view-emp-events .tab:nth-child(2)').classList.add('active');
+    document.getElementById('tab-hire').classList.add('active');
+    renderEmpShowcaseProviders();
+  } else if(tab === 'hired') {
+    document.querySelector('#view-emp-events .tab:nth-child(3)').classList.add('active');
+    document.getElementById('tab-hired').classList.add('active');
+    renderEmpHiredShowcasers();
+  } else if(tab === 'reels') {
+    document.querySelector('#view-emp-events .tab:nth-child(4)').classList.add('active');
+    document.getElementById('tab-reels').classList.add('active');
+  }
+}
+
+// ============== REST OF JAVASCRIPT ==============
+let favourites = new Set(['physics','speaking']);
+let applications = [
+  { gigId:'bookfest', status:'pending', when:'Applied 2 days ago' },
+  { gigId:'kopidrop', status:'accepted', when:'Applied 1 week ago' },
+  { gigId:'addmaths', status:'rejected', when:'Applied 2 weeks ago' }
+];
+let currentDetailId = 'bookfest';
+let detailReturnView = 'view-home';
+let activeFilters = { category:'', location:'', pay:'', types:new Set(), schedule:new Set() };
+let sortMode = 'relevant';
+let currentCarouselIndex = 0;
+
+const chatThreads = {
+  bookfest: { name:'Mark S. — MITC Bookfest', initials:'MB', color:'var(--blue)', messages:[
+    {who:'them', text:'Hi! Thanks for applying to the floor crew shift 😊'},
+    {who:'them', text:'Quick question — are you free for the full 4 hours on the 5th?'}
+  ]},
+  kopidrop: { name:'Shawn C.', initials:'S', color:'var(--blue-deep)', messages:[
+    {who:'them', text:'Hi! Thanks for applying to the weekend barista shift 😊'},
+    {who:'me', text:'Hey Shawn! Happy to help — what time should I arrive on Saturday?'},
+    {who:'them', text:'Shift starts 9am, but could you come in 30 mins early for a quick walkthrough?'},
+    {who:'me', text:'Sure, I can do 8:30am. See you then!'},
+    {who:'them', text:'Perfect, see you Sat 👍'}
+  ]},
+  addmaths: { name:'Add Maths Parent — Mrs. Tan', initials:'U', color:'var(--blue)', messages:[
+    {who:'them', text:'Hi, I saw your application — are Thursdays at 7pm okay?'},
+    {who:'me', text:'Sure, I am free on Thursdays'}
+  ]},
+  phonerepair: { name:'Pintar Phone Repair', initials:'P', color:'var(--yellow-deep)', messages:[
+    {who:'them', text:'Can you start this coming Monday?'},
+    {who:'me', text:'Sounds good, see you Monday!'}
+  ]}
+};
+let currentChatId = 'kopidrop';
+let myReviews = [
+  { gigId:'kopidrop', stars:5, text:'Friendly team and flexible hours — would work here again!' },
+  { gigId:'addmaths', stars:4, text:'Good experience, sessions were well organised.' }
+];
+let editingReviewGigId = null;
+let reportSelectedReason = '';
+
+let deleteTarget = null;
+let deleteCallback = null;
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+// ============== DELETE CONFIRMATION ==============
+function confirmDeleteAction(target, callback) {
+  deleteTarget = target;
+  deleteCallback = callback;
+  document.getElementById('delete-modal').classList.add('show');
+}
+
+function closeDeleteConfirm() {
+  document.getElementById('delete-modal').classList.remove('show');
+  deleteTarget = null;
+  deleteCallback = null;
+}
+
+function confirmDelete() {
+  if(deleteCallback) {
+    deleteCallback(deleteTarget);
+  }
+  closeDeleteConfirm();
+}
+
+// ============== CAROUSEL FOR DETAILS ==============
+function initDetailCarousel(images) {
+  const dotsContainer = document.getElementById('carousel-dots');
+  const heroBg = document.getElementById('detail-hero-bg');
+  
+  if(!images || images.length === 0) {
+    dotsContainer.innerHTML = '';
+    return;
+  }
+  
+  currentCarouselIndex = 0;
+  
+  heroBg.style.backgroundImage = `url('${images[0]}')`;
+  heroBg.style.backgroundSize = 'cover';
+  heroBg.style.backgroundPosition = 'center';
+  
+  dotsContainer.innerHTML = images.map((_, i) => 
+    `<span class="${i === 0 ? 'active' : ''}" onclick="goToDetailImage(${i})"></span>`
+  ).join('');
+  
+  if(window._carouselInterval) clearInterval(window._carouselInterval);
+  if(images.length > 1) {
+    window._carouselInterval = setInterval(() => {
+      currentCarouselIndex = (currentCarouselIndex + 1) % images.length;
+      updateDetailImage(images);
+    }, 4000);
+  }
+}
+
+function goToDetailImage(index) {
+  const images = GIGS.find(g => g.id === currentDetailId)?.images || [];
+  if(index >= images.length) return;
+  currentCarouselIndex = index;
+  updateDetailImage(images);
+  
+  if(window._carouselInterval) {
+    clearInterval(window._carouselInterval);
+    if(images.length > 1) {
+      window._carouselInterval = setInterval(() => {
+        currentCarouselIndex = (currentCarouselIndex + 1) % images.length;
+        updateDetailImage(images);
+      }, 4000);
+    }
+  }
+}
+
+function updateDetailImage(images) {
+  if(!images || images.length === 0) return;
+  const heroBg = document.getElementById('detail-hero-bg');
+  heroBg.style.backgroundImage = `url('${images[currentCarouselIndex]}')`;
+  heroBg.style.backgroundSize = 'cover';
+  heroBg.style.backgroundPosition = 'center';
+  
+  const dots = document.querySelectorAll('#carousel-dots span');
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentCarouselIndex);
+  });
+}
+
+const CATEGORY_ACCENT = {
+  'Events':'var(--blue-deep)', 'F&B / Retail':'var(--yellow-deep)', 'Tutoring':'var(--blue)',
+  'Repair & Tech':'var(--blue-deep)', 'Delivery':'var(--yellow-deep)'
+};
+
+const SCHEDULE_EMOJI = {
+  'Morning':'🌅', 'Afternoon':'☀️', 'Evening':'🌙', 'Weekend':'📅', 'Weekday':'📆', 'Flexible':'🔄'
+};
+
+function gigCardHTML(g){
+  const isFav = favourites.has(g.id);
+  const accent = CATEGORY_ACCENT[g.category] || 'var(--blue)';
+  const scheduleTags = g.schedule ? g.schedule.slice(0,2).map(s => `<span class="tag-pill" style="background:#E8F0FF; color:var(--blue-deep);">${SCHEDULE_EMOJI[s]||''} ${s}</span>`).join('') : '';
+  
+  return `
+    <div class="gig-card" style="border-left:4px solid ${accent};" onclick="showDetail('${g.id}')">
+      <div class="gig-thumb" style="background-image:url('${g.images && g.images[0] ? g.images[0] : 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=200&h=200&fit=crop&crop=center'}');"></div>
+      <div class="gig-body">
+        <div class="gig-top">
+          <span class="gig-title">${g.title}</span>
+          <span class="gig-pay">${g.pay}</span>
+        </div>
+        <div class="gig-meta">${g.location}</div>
+        <div class="gig-tags">
+          <span class="tag-pill verified">✅ Verified</span>
+          <span class="tag-pill student-friendly">🎓 Student-Friendly</span>
+          ${g.tags.map(t=>`<span class="tag-pill">${t}</span>`).join('')}
+          ${scheduleTags}
+        </div>
+      </div>
+      <span class="fav-toggle ${isFav?'is-fav':''}" onclick="event.stopPropagation(); toggleFav('${g.id}')">
+        <svg viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg>
+      </span>
+    </div>`;
+}
+
+function renderFeed(){
+  document.getElementById('feed-list').innerHTML = GIGS.slice(0,6).map(gigCardHTML).join('');
+}
+
+function passesFilters(g){
+  if(activeFilters.category && g.category !== activeFilters.category) return false;
+  if(activeFilters.location && !g.location.toLowerCase().includes(activeFilters.location.toLowerCase())) return false;
+  if(activeFilters.pay){
+    const min = parseFloat(activeFilters.pay);
+    if(!isNaN(min) && g.payNum < min) return false;
+  }
+  if(activeFilters.types.size){
+    const hasType = [...activeFilters.types].some(t => g.tags.includes(t) || (t==='Part-time'));
+    if(!hasType) return false;
+  }
+  if(activeFilters.schedule.size){
+    const hasSchedule = [...activeFilters.schedule].some(s => g.schedule && g.schedule.includes(s));
+    if(!hasSchedule) return false;
+  }
+  return true;
+}
+
+function renderSearch(){
+  const q = (document.getElementById('search-input').value || '').toLowerCase();
+  let list = GIGS.filter(g =>
+    (g.title.toLowerCase().includes(q) || g.location.toLowerCase().includes(q) || g.category.toLowerCase().includes(q))
+    && passesFilters(g)
+  );
+  if(sortMode==='recent'){ list = [...list].reverse(); }
+  const container = document.getElementById('search-list');
+  if(!list.length){
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <p>No gigs match those filters yet.<br>Try widening your search.</p>
+    </div>`;
+    return;
+  }
+  container.innerHTML = list.map(gigCardHTML).join('');
+}
+
+function setSort(mode){
+  sortMode = mode;
+  document.getElementById('sort-relevant').style.color = mode==='relevant' ? 'var(--blue)' : 'var(--ink-soft)';
+  document.getElementById('sort-relevant').style.borderBottom = mode==='relevant' ? '2px solid var(--blue)' : 'none';
+  document.getElementById('sort-recent').style.color = mode==='recent' ? 'var(--blue)' : 'var(--ink-soft)';
+  document.getElementById('sort-recent').style.borderBottom = mode==='recent' ? '2px solid var(--blue)' : 'none';
+  renderSearch();
+}
+
+document.addEventListener('click', (e)=>{
+  const typeChip = e.target.closest('#type-chips .chip');
+  if(typeChip){ typeChip.classList.toggle('sel'); return; }
+  const scheduleChip = e.target.closest('#schedule-chips .chip');
+  if(scheduleChip){ scheduleChip.classList.toggle('sel'); return; }
+  const reportChip = e.target.closest('#report-reasons .chip');
+  if(reportChip){
+    document.querySelectorAll('#report-reasons .chip').forEach(c=>c.classList.remove('sel'));
+    reportChip.classList.add('sel');
+    reportSelectedReason = reportChip.dataset.val;
+    return;
+  }
+  const starChip = e.target.closest('#edit-review-stars .chip');
+  if(starChip){
+    document.querySelectorAll('#edit-review-stars .chip').forEach(c=>c.classList.remove('sel'));
+    starChip.classList.add('sel');
+    return;
+  }
+});
+
+function renderReviews(){
+  const tileEl = document.getElementById('tile-review-count');
+  if(tileEl) tileEl.textContent = `${myReviews.length} written`;
+  renderEmpReviewsBarChart('rv09-bar-chart','rv09-avg','rv09-count','rv09-flagged');
+  const container = document.getElementById('reviews-list');
+  if(!container) return;
+  container.innerHTML = empReviews.map(r=>`
+    <div class="review-card ${r.flagged?'flagged':''}">
+      <div class="rc-top">
+        <div class="avatar-circle" style="background:${r.color};">${r.initials}</div>
+        <div><div class="rc-name">${r.name}</div><div class="rc-role">Worked an event with you</div></div>
+        <div class="rc-stars">${r.stars}</div>
+      </div>
+      <div class="rc-text">${r.text}</div>
+      <div class="rc-date">${r.date}</div>
+      ${r.flagged ? `<div class="rc-flag"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#C7402C" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/></svg>Reported issue</div>` : ''}
+      <button class="rc-reply-btn" onclick="toast('Reply sent to ${r.name}')">Reply</button>
+    </div>`).join('');
+}
+
+function editReview(gigId){
+  const r = myReviews.find(x=>x.gigId===gigId);
+  if(!r) return;
+  editingReviewGigId = gigId;
+  const g = GIGS.find(x=>x.id===gigId);
+  document.getElementById('edit-review-title').textContent = `Edit review — ${g ? g.title : ''}`;
+  document.getElementById('edit-review-text').value = r.text;
+  document.querySelectorAll('#edit-review-stars .chip').forEach(c=>{
+    c.classList.toggle('sel', Number(c.dataset.val) === r.stars);
+  });
+  go('view-edit-review');
+}
+
+function saveReview(){
+  const r = myReviews.find(x=>x.gigId===editingReviewGigId);
+  if(!r) return;
+  const selected = document.querySelector('#edit-review-stars .chip.sel');
+  r.stars = selected ? Number(selected.dataset.val) : r.stars;
+  r.text = document.getElementById('edit-review-text').value || r.text;
+  toast('Review updated');
+  go('view-reviews');
+}
+
+function deleteReview(gigId){
+  confirmDeleteAction(gigId, (id) => {
+    myReviews = myReviews.filter(r=>r.gigId !== id);
+    toast('Review deleted');
+    renderReviews();
+  });
+}
+
+function submitReport(){
+  if(!reportSelectedReason){
+    toast('Pick a reason first');
+    return;
+  }
+  toast('Report submitted — thanks for flagging this');
+  reportSelectedReason = '';
+  document.querySelectorAll('#report-reasons .chip').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('report-notes').value = '';
+  goBackFromDetail();
+}
+
+function handleSignup(){
+  const email = document.getElementById('signup-email').value.trim();
+  const pass = document.getElementById('signup-pass').value.trim();
+  if(!email || !pass){
+    toast('Please fill in your email and password');
+    return;
+  }
+  toast(`Account successfully created — welcome!`);
+  go('view-login');
+}
+
+function applyFilters(){
+  activeFilters.category = document.getElementById('filter-category').value;
+  activeFilters.location = document.getElementById('filter-location').value;
+  activeFilters.pay = document.getElementById('filter-pay').value;
+  activeFilters.types = new Set([...document.querySelectorAll('#type-chips .chip.sel')].map(c=>c.dataset.val));
+  activeFilters.schedule = new Set([...document.querySelectorAll('#schedule-chips .chip.sel')].map(c=>c.dataset.val));
+  go('view-search');
+  renderSearch();
+  toast('Filters applied');
+}
+
+function clearFilters(){
+  document.getElementById('filter-category').value = '';
+  document.getElementById('filter-location').value = '';
+  document.getElementById('filter-pay').value = '';
+  document.querySelectorAll('#type-chips .chip').forEach(c=>c.classList.remove('sel'));
+  document.querySelectorAll('#schedule-chips .chip').forEach(c=>c.classList.remove('sel'));
+  activeFilters = { category:'', location:'', pay:'', types:new Set(), schedule:new Set() };
+  renderSearch();
+  go('view-search');
+}
+
+function toggleFav(id){
+  if(favourites.has(id)){ favourites.delete(id); toast('Removed from favourites'); }
+  else { favourites.add(id); toast('Saved to favourites'); }
+  renderFeed();
+  renderSearch();
+  renderFavourites();
+  updateTileCounts();
+  if(currentDetailId === id) syncDetailFavIcon();
+}
+
+function toggleFavCurrent(){ toggleFav(currentDetailId); }
+
+function syncDetailFavIcon(){
+  const btn = document.getElementById('detail-fav-btn');
+  const isFav = favourites.has(currentDetailId);
+  btn.classList.toggle('is-fav', isFav);
+}
+
+function renderFavourites(){
+  const list = GIGS.filter(g=>favourites.has(g.id));
+  const container = document.getElementById('favourites-list');
+  if(!list.length){
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg>
+      <p>No favourites yet.<br>Tap the heart on any gig to save it here.</p>
+    </div>`;
+    return;
+  }
+  container.innerHTML = list.map(g=>`
+    <div class="fav-row" onclick="showDetail('${g.id}')">
+      <div class="gig-thumb" style="width:44px;height:44px;background-image:url('${g.images && g.images[0] ? g.images[0] : 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=200&h=200&fit=crop&crop=center'}');"></div>
+      <div style="flex:1;">
+        <div style="font-weight:600; font-size:13.5px;">${g.title}</div>
+        <div style="font-size:11.5px; color:var(--ink-soft);">${g.pay} · ${g.tags[0]||''}</div>
+      </div>
+      <span class="fav-toggle is-fav" onclick="event.stopPropagation(); toggleFav('${g.id}')">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg>
+      </span>
+    </div>`).join('');
+}
+
+function showDetail(id, fromView){
+  currentDetailId = id;
+  detailReturnView = fromView || getActiveViewId() || 'view-home';
+  const g = GIGS.find(x=>x.id===id);
+  if(!g) return;
+  
+  const images = g.images || [g.image || 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=200&fit=crop&crop=center'];
+  initDetailCarousel(images);
+  
+  document.getElementById('detail-title').textContent = g.title;
+  document.getElementById('detail-org').textContent = g.org;
+  document.getElementById('detail-rating').textContent = g.rating;
+  document.getElementById('detail-pay').textContent = g.pay;
+  document.getElementById('detail-date').textContent = g.date;
+  document.getElementById('detail-about').textContent = g.about;
+  document.getElementById('detail-scope').textContent = g.scope;
+  document.getElementById('detail-reviews').innerHTML = g.reviews.map((r,i)=>{
+    const texts = [
+      "Shift was well organised and the supervisor briefed us clearly before we started. Pay came through on time.",
+      "Honestly a bit chaotic on the first day — instructions changed last minute and nobody told us where to go.",
+      "Good experience overall, made some friends and the work wasn't too physically demanding.",
+      "Loved it! Flexible breaks and the team was super friendly. Would apply again.",
+      "Pay was delayed by two days past what was promised, had to follow up myself to get it sorted."
+    ];
+    const flagged = (i % 4 === 1);
+    const text = texts[i % texts.length];
+    const dates = ['2 weeks ago','1 month ago','3 days ago','2 months ago'];
+    return `
+    <div class="review-card ${flagged?'flagged':''}">
+      <div class="rc-top">
+        <div class="avatar-circle" style="background:${r.color};"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+        <div><div class="rc-name">${r.name}</div><div class="rc-role">Worked this gig</div></div>
+        <div class="rc-stars">${r.stars}</div>
+      </div>
+      <div class="rc-text">${text}</div>
+      <div class="rc-date">${dates[i % dates.length]}</div>
+      ${flagged ? `<div class="rc-flag"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#C7402C" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/></svg>Reported issue</div>` : ''}
+    </div>`;
+  }).join('');
+  syncDetailFavIcon();
+  updateApplyButton();
+  go('view-detail');
+}
+
+function getActiveViewId(){
+  const el = document.querySelector('.view.active');
+  return el ? el.id : null;
+}
+
+function goBackFromDetail(){ go(detailReturnView); }
+
+function updateApplyButton(){
+  const btn = document.getElementById('detail-apply-btn');
+  const already = applications.some(a=>a.gigId===currentDetailId);
+  btn.disabled = already;
+  btn.textContent = already ? 'Applied ✓' : 'Apply now';
+}
+
+function openApplyForm(){
+  const g = GIGS.find(x=>x.id===currentDetailId);
+  document.getElementById('apply-form-sub').textContent = g ? `Applying to ${g.title} — ${g.org}` : 'Applying';
+  go('view-apply-form');
+}
+
+function submitApplication(){
+  const name = document.getElementById('apply-name').value.trim();
+  if(!name){ toast('Please add your name'); return; }
+  applyToCurrent();
+}
+
+function applyToCurrent(){
+  if(applications.some(a=>a.gigId===currentDetailId)) return;
+  applications.unshift({ gigId: currentDetailId, status:'pending', when:'Applied just now' });
+  updateApplyButton();
+  renderApplications();
+  updateTileCounts();
+  toast('Application sent!');
+  setTimeout(()=> go('view-applications'), 500);
+}
+
+function renderApplications(){
+  const container = document.getElementById('applications-list');
+  if(!applications.length){
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <p>No applications yet.<br>Browse the feed and apply to a gig.</p>
+    </div>`;
+    return;
+  }
+  container.innerHTML = applications.map(a=>{
+    const g = GIGS.find(x=>x.id===a.gigId);
+    if(!g) return '';
+    const pillClass = a.status==='pending' ? 'status-pending' : a.status==='accepted' ? 'status-accepted' : 'status-rejected';
+    const label = a.status.charAt(0).toUpperCase()+a.status.slice(1);
+    return `
+      <div class="app-row" onclick="showDetail('${g.id}','view-applications')">
+        <div class="gig-thumb" style="width:44px;height:44px;background-image:url('${g.images && g.images[0] ? g.images[0] : 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=200&h=200&fit=crop&crop=center'}');"></div>
+        <div style="flex:1;">
+          <div style="font-weight:600; font-size:13.5px;">${g.title}</div>
+          <div style="font-size:11.5px; color:var(--ink-soft);">${a.when}</div>
+        </div>
+        <span class="status-pill ${pillClass}">${label}</span>
+      </div>`;
+  }).join('');
+}
+
+function updateTileCounts(){
+  const inProgress = applications.filter(a=>a.status==='pending').length;
+  document.getElementById('tile-app-count').textContent = `${inProgress} in progress`;
+  document.getElementById('tile-fav-count').textContent = `${favourites.size} saved`;
+}
+
+function openChatFor(id){
+  const thread = chatThreads[id] || chatThreads['kopidrop'];
+  currentChatId = chatThreads[id] ? id : 'kopidrop';
+  document.getElementById('chat-name').textContent = thread.name;
+  document.getElementById('chat-avatar').innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+  document.getElementById('chat-avatar').style.background = thread.color;
+  renderChat();
+  go('view-chat');
+}
+
+function renderChat(){
+  const thread = chatThreads[currentChatId];
+  const area = document.getElementById('chat-area');
+  area.innerHTML = thread.messages.map(m=>`<div class="bubble ${m.who==='me'?'me':'them'}">${m.text}</div>`).join('');
+  area.scrollTop = area.scrollHeight;
+}
+
+function sendMessage(){
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text && !attachedFile) return;
+  
+  if(text) {
+    chatThreads[currentChatId].messages.push({who:'me', text});
+  }
+  
+  if(attachedFile) {
+    chatThreads[currentChatId].messages.push({who:'me', text: '📎 Sent file: ' + attachedFile.name});
+    attachedFile = null;
+    document.getElementById('file-preview-container').innerHTML = '';
+    document.getElementById('file-input').value = '';
+  }
+  
+  input.value = '';
+  renderChat();
+  setTimeout(()=>{
+    chatThreads[currentChatId].messages.push({who:'them', text:'Got it, thanks for the update!'});
+    renderChat();
+  }, 900);
+}
+
+function handleLogin(){
+  const email = document.getElementById('login-email').value;
+  toast(email ? `Welcome back, ${email.split('@')[0]}!` : 'Logged in');
+  go('view-home');
+}
+
+function addSkill(){
+  const skill = prompt('Add a skill:');
+  if(skill && skill.trim()){
+    const row = document.getElementById('skills-row');
+    const addBtn = row.querySelector('.skill-chip.add');
+    const chip = document.createElement('span');
+    chip.className = 'skill-chip';
+    chip.textContent = skill.trim();
+    row.insertBefore(chip, addBtn);
+    toast('Skill added');
+  }
+}
+
+function saveProfile(){
+  const name = document.getElementById('edit-name').value;
+  document.querySelector('#view-profile .profile-head h2').textContent = name || 'Sarah M.';
+  toast('Profile updated');
+  go('view-profile');
+}
+
+// ============== NAV CHROME ==============
+const navTabs = [
+  {id:'home', label:'Home', target:'view-home', icon:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>'},
+  {id:'jobs', label:'Jobs', target:'view-jobs', icon:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'},
+  {id:'reels', label:'Reels', target:'view-reels', icon:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/>'},
+  {id:'messages', label:'Messages', target:'view-messages', icon:'<path d="M21 11.5a8.38 8.38 0 0 1-9 8.4A8.5 8.5 0 1 1 21 11.5z"/>'},
+  {id:'showcase', label:'Showcase', target:'view-showcase', icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13l-4 4-2-2"/>'}
+];
+
+['nav-home','nav-search','nav-jobs','nav-applications','nav-reviews','nav-favourites','nav-reels','nav-messages','nav-showcase','nav-showcase-detail'].forEach(navId=>{
+  const el = document.getElementById(navId);
+  if(!el) return;
+  const activeKey = navId.replace('nav-','');
+  let activeTab = activeKey;
+  if(activeKey==='search') activeTab='home';
+  if(activeKey==='applications' || activeKey==='favourites' || activeKey==='reviews') activeTab='jobs';
+  if(activeKey==='showcase' || activeKey==='showcase-detail') activeTab='showcase';
+  el.innerHTML = navTabs.map(t=>`
+    <button class="nav-item ${t.id===activeTab?'active':''}" onclick="go('${t.target}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${t.icon}</svg>
+      ${t.label}
+    </button>`).join('');
+});
+
+function go(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('#screen-nav button').forEach(b=>b.classList.remove('active'));
+  const navBtn = document.querySelector(`#screen-nav button[data-target="${id}"]`);
+  if(navBtn) navBtn.classList.add('active');
+  document.querySelector('.phone-screen').scrollTop = 0;
+  if(id==='view-applications') renderApplications();
+  if(id==='view-favourites') renderFavourites();
+  if(id==='view-reviews') renderReviews();
+  if(id==='view-search') renderSearch();
+  if(id==='view-reels') renderReels('reels-feed', false);
+  if(id==='view-emp-reels') renderReels('emp-reels-feed', true);
+  if(id==='view-emp-events') { renderEmpFullEvents(); renderEmpShowcaseProviders(); renderEmpHiredShowcasers(); }
+  if(id==='view-emp-home') renderEmpOverview();
+  if(id==='view-emp-applicants') renderApplicantsList();
+  if(id==='view-emp-reviews') renderEmpReviewsList();
+  if(id==='view-showcase') renderShowcaseProviders();
+  if(id==='view-profile') renderProfileShowcaseServices();
+  if(id==='view-jobs') { renderMyShowcaseServices(); renderMyHiredShowcasers(); }
+}
+
+document.querySelectorAll('#screen-nav button').forEach(b=>{
+  b.addEventListener('click', ()=> go(b.dataset.target));
+});
+
+// ============== EMPLOYER NAV CHROME ==============
+const empNavTabs = [
+  {id:'home', label:'Home', target:'view-emp-home', icon:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>'},
+  {id:'events', label:'Events', target:'view-emp-events', icon:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/>'},
+  {id:'reels', label:'Reels', target:'view-emp-reels', icon:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/>'},
+  {id:'messages', label:'Messages', target:'view-messages', icon:'<path d="M21 11.5a8.38 8.38 0 0 1-9 8.4A8.5 8.5 0 1 1 21 11.5z"/>'},
+  {id:'profile', label:'Profile', target:'view-emp-profile', icon:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'}
+];
+['enav-home','enav-events','enav-reels','enav-messages','enav-profile','enav-applicants','enav-reviews'].forEach(navId=>{
+  const el = document.getElementById(navId);
+  if(!el) return;
+  const activeTab = navId.replace('enav-','');
+  const tabs = empNavTabs.map(t=>{
+    if(t.id === 'ads') return null;
+    return t;
+  }).filter(Boolean);
+  el.innerHTML = tabs.map(t=>`
+    <button class="nav-item ${t.id===activeTab?'active':''}" style="${t.id===activeTab?'color:var(--emp-deep);':''}" onclick="go('${t.target}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="${t.id===activeTab?'stroke:var(--emp-deep);':''}">${t.icon}</svg>
+      ${t.label}
+    </button>`).join('');
+});
+
+// ============== LOGOUT CONFIRM ==============
+let logoutDestination = 'view-role';
+function openLogoutConfirm(destination){
+  logoutDestination = destination || 'view-role';
+  document.getElementById('logout-modal').classList.add('show');
+}
+function closeLogoutConfirm(){
+  document.getElementById('logout-modal').classList.remove('show');
+}
+function confirmLogout(){
+  closeLogoutConfirm();
+  toast('Logged out');
+  go(logoutDestination);
+}
+
+// ============== EMPLOYER AUTH ==============
+function handleEmpLogin(){
+  const email = document.getElementById('emp-login-email').value;
+  toast(email ? `Welcome back, ${email.split('@')[0]}!` : 'Logged in');
+  go('view-emp-home');
+}
+function handleEmpSignup(){
+  const company = document.getElementById('emp-signup-company').value || 'Your business';
+  toast(`Application submitted for ${company}`);
+  go('view-emp-verify');
+}
+function simulateApproval(){
+  toast('You are verified! Welcome aboard 🎉');
+  setTimeout(()=> go('view-emp-home'), 500);
+}
+
+// ============== EMPLOYER EVENTS ==============
+let empEvents = [
+  { id:'e1', title:'Booth Keeper @ Bookfest KLCC 2026', pay:'RM150', location:'KLCC Convention Centre', date:'2026-09-08', time:'9:30 AM – 10:00 PM', desc:'Greet visitors, manage stock, light retail work.', status:'live', applicants:9, views:312 },
+  { id:'e2', title:'Volunteer @ Bookfest KLCC 2026', pay:'RM30/day', location:'KLCC Convention Centre', date:'2026-09-09', time:'10:00 AM – 6:00 PM', desc:'Support floor crew during peak hours.', status:'live', applicants:4, views:188 },
+  { id:'e3', title:'Design Pop-up Helper', pay:'RM6/hr', location:'Bangsar South', date:'2026-09-12', time:'12:00 PM – 8:00 PM', desc:'Assist with merchandise display and customer queries.', status:'finished', applicants:2, views:45 }
+];
+let editingEventId = null;
+
+function renderEmpEvents(){
+  const container = document.getElementById('emp-events-list');
+  if(!container) return;
+  document.getElementById('emp-event-count').textContent = `${empEvents.filter(e=>e.status==='live').length} live`;
+  if(!empEvents.length){
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+      <p>No events yet.<br>Tap + to post your first event.</p>
+    </div>`;
+    return;
+  }
+  const statusLabel = { live:'Live', draft:'Draft', pending:'Pending review', finished:'Finished' };
+  const pendingBanner = empEvents.some(e=>e.status==='pending') ? `
+    <div class="approval-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+      <div><b>Some edits are under review</b><span>Our team double-checks pay, dates &amp; descriptions before changes go live — usually within a few hours.</span></div>
+    </div>` : '';
+  container.innerHTML = pendingBanner + empEvents.map(e=>`
+    <div class="event-card">
+      <div class="event-top">
+        <div><div class="et-title">${e.title}</div><div class="et-meta">${e.location} · ${e.date || 'No date set'}</div></div>
+        <span class="event-status ${e.status}">${statusLabel[e.status] || e.status}</span>
+      </div>
+      <div class="event-stats"><span><b>${e.pay}</b> pay</span><span><b>${e.applicants}</b> applicants</span><span><b>${e.views}</b> views</span></div>
+      <div class="event-actions">
+        <button class="edit" onclick="openEventEditor('${e.id}')">Edit</button>
+        <button class="del" onclick="deleteEvent('${e.id}')">Remove</button>
+        ${e.status === 'finished' ? `<button class="edit" style="border-color:var(--yellow-deep); color:var(--yellow-deep);" onclick="rateWorker()">⭐ Rate</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function renderEmpFullEvents() {
+  // Same as renderEmpEvents but for the full events page
+  const container = document.getElementById('emp-events-full-list');
+  if(!container) return;
+  if(!empEvents.length){
+    container.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+      <p>No events yet.<br>Tap + to post your first event.</p>
+    </div>`;
+    return;
+  }
+  const statusLabel = { live:'Live', draft:'Draft', pending:'Pending review', finished:'Finished' };
+  container.innerHTML = empEvents.map(e=>`
+    <div class="event-card">
+      <div class="event-top">
+        <div><div class="et-title">${e.title}</div><div class="et-meta">${e.location} · ${e.date || 'No date set'}</div></div>
+        <span class="event-status ${e.status}">${statusLabel[e.status] || e.status}</span>
+      </div>
+      <div class="event-stats"><span><b>${e.pay}</b> pay</span><span><b>${e.applicants}</b> applicants</span><span><b>${e.views}</b> views</span></div>
+      <div class="event-actions">
+        <button class="edit" onclick="openEventEditor('${e.id}')">Edit</button>
+        <button class="del" onclick="deleteEvent('${e.id}')">Remove</button>
+        ${e.status === 'finished' ? `<button class="edit" style="border-color:var(--yellow-deep); color:var(--yellow-deep);" onclick="rateWorker()">⭐ Rate</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function openEventEditor(id){
+  editingEventId = id;
+  const isEdit = !!id;
+  document.getElementById('event-edit-title').textContent = isEdit ? 'Edit event' : 'Add event';
+  const e = isEdit ? empEvents.find(x=>x.id===id) : null;
+  document.getElementById('ev-title').value = e ? e.title : '';
+  document.getElementById('ev-pay').value = e ? e.pay : '';
+  document.getElementById('ev-payhr').value = '';
+  document.getElementById('ev-location').value = e ? e.location : '';
+  document.getElementById('ev-date').value = e ? e.date : '';
+  document.getElementById('ev-time').value = e ? e.time : '';
+  document.getElementById('ev-desc').value = e ? e.desc : '';
+  document.getElementById('ev-status').value = e ? e.status : 'live';
+  go('view-emp-event-edit');
+}
+
+function saveEvent(){
+  const title = document.getElementById('ev-title').value.trim();
+  if(!title){ toast('Please add a title'); return; }
+  const data = {
+    title,
+    pay: document.getElementById('ev-pay').value.trim() || document.getElementById('ev-payhr').value.trim() || 'RM —',
+    location: document.getElementById('ev-location').value.trim() || 'Location TBC',
+    date: document.getElementById('ev-date').value,
+    time: document.getElementById('ev-time').value.trim(),
+    desc: document.getElementById('ev-desc').value.trim(),
+    status: document.getElementById('ev-status').value
+  };
+  if(editingEventId){
+    const e = empEvents.find(x=>x.id===editingEventId);
+    const wasLive = e.status === 'live';
+    Object.assign(e, data);
+    if(wasLive && data.status === 'live'){
+      e.status = 'pending';
+      toast('Changes submitted — pending approval');
+    } else {
+      toast('Event updated');
+    }
+    if(data.status === 'finished') {
+      toast('Event marked as finished — ready for ratings');
+    }
+  } else {
+    empEvents.unshift({ id:'e'+Date.now(), applicants:0, views:0, ...data });
+    toast('Event posted');
+  }
+  renderEmpEvents();
+  renderEmpFullEvents();
+  go('view-emp-events');
+}
+
+function deleteEvent(id){
+  confirmDeleteAction(id, (eventId) => {
+    empEvents = empEvents.filter(e=>e.id!==eventId);
+    renderEmpEvents();
+    renderEmpFullEvents();
+    toast('Event removed');
+  });
+}
+
+// ============== DUAL RATING SYSTEM ==============
+function rateWorker() {
+  const stars = prompt('Rate this worker (1-5 stars):', '5');
+  if(stars && !isNaN(stars) && stars >= 1 && stars <= 5) {
+    toast(`⭐ Rated ${stars} stars! Thank you for your feedback.`);
+  } else if(stars !== null) {
+    toast('Please enter a number between 1 and 5.');
+  }
+}
+
+function rateEmployer() {
+  const stars = prompt('Rate this employer (1-5 stars):', '5');
+  if(stars && !isNaN(stars) && stars >= 1 && stars <= 5) {
+    toast(`⭐ Rated ${stars} stars! Your feedback helps the community.`);
+  } else if(stars !== null) {
+    toast('Please enter a number between 1 and 5.');
+  }
+}
+
+// ============== ADVERTISE / SUBSCRIPTION ==============
+const planPrices = { free:'RM0/mo', boost:'RM49/mo', premium:'RM99/mo' };
+let selectedPlan = 'boost';
+function selectPlan(plan){
+  selectedPlan = plan;
+  document.querySelectorAll('.plan-card').forEach(c=> c.classList.toggle('sel', c.dataset.plan===plan));
+  document.getElementById('plan-confirm-price').textContent = planPrices[plan];
+}
+function subscribePlan(){
+  const names = { free:'Free', boost:'Boost', premium:'Premium' };
+  toast(`Subscribed to ${names[selectedPlan]} plan!`);
+  document.getElementById('emp-plan-label').textContent = `${names[selectedPlan]} plan`;
+  setTimeout(()=> go('view-emp-home'), 600);
+}
+
+// ============== REELS ==============
+let reelsData = [
+  { id:'r1', org:'Bookmark Co.', orgType:'employer', verified:true, color:'linear-gradient(135deg, #2d3436, #636e72)', cap:'A day behind the booth at Bookfest KLCC — fast-paced, fun, and great pay 📚✨', tags:['Booth Fest','Weekend'], likes:128, comments:14,
+    thumbnail:'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=600&fit=crop&crop=center' },
+  { id:'r2', org:'Kopi Drop', orgType:'employer', verified:true, color:'linear-gradient(135deg, #6c5ce7, #a29bfe)', cap:'Weekend barista shifts — full training given, no experience needed!', tags:['F&B','Part-time'], likes:96, comments:8,
+    thumbnail:'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=600&fit=crop&crop=center' },
+  { id:'r3', org:'Sarah M.', orgType:'showcaser', verified:false, color:'linear-gradient(135deg, #fd79a8, #e17055)', cap:'My design process for campus event posters — from sketch to final ✨', tags:['Design','Creative'], likes:45, comments:6,
+    thumbnail:'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=600&fit=crop&crop=center' },
+  { id:'r4', org:'Rizal A.', orgType:'showcaser', verified:false, color:'linear-gradient(135deg, #00b894, #00cec9)', cap:'Breaking down complex Add Maths problems step by step 🧮', tags:['Tutoring','Math'], likes:67, comments:9,
+    thumbnail:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=600&fit=crop&crop=center' },
+  { id:'r5', org:'Farah I.', orgType:'showcaser', verified:false, color:'linear-gradient(135deg, #fdcb6e, #e17055)', cap:'Capturing the energy of campus events through my lens 📸', tags:['Photography','Events'], likes:89, comments:12,
+    thumbnail:'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=600&fit=crop&crop=center' }
+];
+let likedReels = new Set();
+
+function renderReels(targetId, isEmployer){
+  const feed = document.getElementById(targetId);
+  feed.innerHTML = reelsData.map(r=>{
+    const liked = likedReels.has(r.id+targetId);
+    const isShowcaser = r.orgType === 'showcaser';
+    return `
+    <div class="reel-slide">
+      <div class="rbg" style="background-image:url('${r.thumbnail || r.color}'); background-size:cover; background-position:center;"></div>
+      <div class="rgrad"></div>
+      <div class="reel-topbar"><span class="brand" style="font-weight:700; cursor:pointer;" onclick="openReelProfile('${r.org}','${r.orgType}','${isEmployer}')">${isEmployer ? 'My Reels' : 'FlexStart Reels'}</span>
+        <div class="icon-btn" style="background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.3);" onclick="go('${isEmployer ? 'view-emp-home' : 'view-home'}')"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+      </div>
+      <div class="reel-play" onclick="toast('Playing reel…')"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="reel-body">
+        <div class="reel-info">
+          <div class="remp" onclick="openReelProfile('${r.org}','${r.orgType}','${isEmployer}')">${r.org}${r.verified ? ' <svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>' : ''}</div>
+          <div class="rcap">${r.cap}</div>
+          <div class="rtags">${r.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+        </div>
+        <div class="reel-actions">
+          <button class="${liked?'liked':''}" onclick="toggleReelLike('${r.id}','${targetId}')">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg>
+            ${r.likes + (liked?1:0)}
+          </button>
+          <button onclick="toast('${r.comments} comments')">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.4A8.5 8.5 0 1 1 21 11.5z"/></svg>
+            ${r.comments}
+          </button>
+          <button onclick="toast('Link copied')">
+            <svg viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
+            Share
+          </button>
+          <div class="sound-indicator">
+            <svg viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M17 8c1.5 1.5 2 3 2 5 0 2-1 3.5-2 5"/><path d="M20 5c2.5 2.5 3 6 3 9 0 3-1 6-3 8"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleReelLike(id, targetId){
+  const key = id+targetId;
+  if(likedReels.has(key)) likedReels.delete(key); else likedReels.add(key);
+  renderReels(targetId, targetId==='emp-reels-feed');
+}
+
+function publishReel(){
+  const cap = document.getElementById('reel-caption').value.trim();
+  if(!cap){ toast('Add a caption first'); return; }
+  reelsData.unshift({ 
+    id:'r'+Date.now(), 
+    org:'The Bookmark Co.', 
+    orgType:'employer',
+    verified:true, 
+    color:'linear-gradient(135deg, var(--emp), var(--emp-deep))', 
+    cap, 
+    tags:['New'], 
+    likes:0, 
+    comments:0,
+    thumbnail:'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=600&fit=crop&crop=center'
+  });
+  document.getElementById('reel-caption').value = '';
+  toast('Reel published!');
+  go('view-emp-reels');
+}
+
+// ============== APPLICANTS ==============
+let applicantsData = [
+  { id:'a1', name:'Sarah M.', initials:'SM', color:'var(--blue)', event:'Booth Keeper @ Bookfest KLCC 2026', status:'pending', when:'Applied 2 hours ago', email:'sarahm123@gmail.com', phone:'012-345 6789', avail:'Weekends, evenings after 6pm', year:'Year 2', note:'I love books and have worked retail before during Ramadan bazaars — confident I can keep the booth organised during busy hours.', skills:['Customer service','Basic design','Tutoring'] },
+  { id:'a2', name:'Rizal A.', initials:'RA', color:'var(--emp-deep)', event:'Volunteer @ Bookfest KLCC 2026', status:'accepted', when:'Applied yesterday', email:'rizal.a@gmail.com', phone:'017-888 2210', avail:'Full weekend availability', year:'Year 3', note:'Volunteered at 2 previous campus events, comfortable with crowd management and queueing systems.', skills:['Event setup','First aid certified'] },
+  { id:'a3', name:'Farah I.', initials:'FI', color:'var(--blue-deep)', event:'Booth Keeper @ Bookfest KLCC 2026', status:'pending', when:'Applied 4 hours ago', email:'farah.izzati@gmail.com', phone:'019-220 4471', avail:'Weekdays only, 2pm–8pm', year:'Year 1', note:'New to working but very organised — I currently manage my college\'s book club inventory.', skills:['Organisation','Social media'] },
+  { id:'a4', name:'Wei Jie T.', initials:'WJ', color:'#5B7FE0', event:'Design Pop-up Helper', status:'rejected', when:'Applied 3 days ago', email:'weijie.t@gmail.com', phone:'011-2233 9988', avail:'Weekends only', year:'Year 2', note:'Studying graphic design, keen to help with merchandise display.', skills:['Design','Photoshop'] },
+  { id:'a5', name:'Nabil H.', initials:'NH', color:'var(--yellow-deep)', event:'Volunteer @ Bookfest KLCC 2026', status:'pending', when:'Applied 6 hours ago', email:'nabil.hakim@gmail.com', phone:'013-776 5544', avail:'Saturday only', year:'Year 4', note:'Final year student looking for a short, flexible commitment before graduation.', skills:['Leadership','Public speaking'] }
+];
+let currentApplicantId = null;
+let applicantReturnView = 'view-emp-home';
+
+function donutSlices(counts){
+  const total = counts.reduce((s,c)=>s+c.value,0) || 1;
+  let acc = 0;
+  return counts.map(c=>{
+    const start = acc/total*360;
+    acc += c.value;
+    const end = acc/total*360;
+    return `${c.color} ${start}deg ${end}deg`;
+  }).join(', ');
+}
+
+function renderEmpOverview(){
+  const counts = {
+    pending: applicantsData.filter(a=>a.status==='pending').length,
+    accepted: applicantsData.filter(a=>a.status==='accepted').length,
+    rejected: applicantsData.filter(a=>a.status==='rejected').length
+  };
+  const total = applicantsData.length;
+  document.getElementById('ov-total-apps').textContent = total;
+  document.getElementById('ov-events').textContent = empEvents.length;
+  document.getElementById('ov-rating').textContent = '4.6★';
+  const appCountEl = document.getElementById('emp-app-count');
+  if(appCountEl) appCountEl.textContent = `${total} total`;
+  document.getElementById('donut-center').textContent = total;
+
+  const slices = [
+    { label:'Pending', value:counts.pending, color:'var(--emp-deep)' },
+    { label:'Accepted', value:counts.accepted, color:'#1C8A4D' },
+    { label:'Rejected', value:counts.rejected, color:'#C7402C' }
+  ];
+  document.getElementById('app-donut').style.background = `conic-gradient(${donutSlices(slices)})`;
+  document.getElementById('app-legend').innerHTML = slices.map(s=>`
+    <div class="leg-row"><span class="dot" style="background:${s.color};"></span><span class="lab">${s.label}</span><b>${s.value}</b></div>`).join('');
+
+  document.getElementById('emp-recent-applicants').innerHTML = applicantsData.slice(0,3).map(a=>{
+    const pillClass = a.status==='pending' ? 'status-pending' : a.status==='accepted' ? 'status-accepted' : 'status-rejected';
+    const label = a.status.charAt(0).toUpperCase()+a.status.slice(1);
+    return `<div class="app-row" onclick="openApplicant('${a.id}','view-emp-home')"><div class="avatar-circle" style="background:${a.color};">${a.initials}</div><div style="flex:1;"><div style="font-weight:600; font-size:13.5px;">${a.name} — ${a.event.split(' @ ')[0]}</div><div style="font-size:11.5px; color:var(--ink-soft);">${a.when}</div></div><span class="status-pill ${pillClass}">${label}</span></div>`;
+  }).join('');
+
+  renderEmpReviewsBarChart('rv-bar-chart','rv-avg','rv-count','rv-flagged');
+}
+
+function renderApplicantsList(){
+  const container = document.getElementById('emp-applicants-list');
+  container.innerHTML = applicantsData.map(a=>{
+    const pillClass = a.status==='pending' ? 'status-pending' : a.status==='accepted' ? 'status-accepted' : 'status-rejected';
+    const label = a.status.charAt(0).toUpperCase()+a.status.slice(1);
+    return `<div class="app-row" onclick="openApplicant('${a.id}','view-emp-applicants')"><div class="avatar-circle" style="background:${a.color};">${a.initials}</div><div style="flex:1;"><div style="font-weight:600; font-size:13.5px;">${a.name}</div><div style="font-size:11.5px; color:var(--ink-soft);">${a.event}</div></div><span class="status-pill ${pillClass}">${label}</span></div>`;
+  }).join('');
+}
+
+function openApplicant(id, fromView){
+  currentApplicantId = id;
+  applicantReturnView = fromView || 'view-emp-home';
+  const a = applicantsData.find(x=>x.id===id);
+  if(!a) return;
+  document.getElementById('appdet-avatar').style.background = a.color;
+  document.getElementById('appdet-avatar').textContent = a.initials;
+  document.getElementById('appdet-name').textContent = a.name;
+  document.getElementById('appdet-applying').textContent = `Applying for ${a.event}`;
+  document.getElementById('appdet-email').textContent = a.email;
+  document.getElementById('appdet-phone').textContent = a.phone;
+  document.getElementById('appdet-avail').textContent = a.avail;
+  document.getElementById('appdet-year').textContent = a.year;
+  document.getElementById('appdet-when').textContent = a.when;
+  document.getElementById('appdet-note').textContent = a.note;
+  document.getElementById('appdet-skills').innerHTML = a.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('');
+  const statusEl = document.getElementById('appdet-status');
+  statusEl.textContent = a.status.charAt(0).toUpperCase()+a.status.slice(1);
+  statusEl.style.background = a.status==='accepted' ? '#E1F5E9' : a.status==='rejected' ? '#FBE6E3' : 'rgba(255,255,255,.2)';
+  statusEl.style.color = a.status==='accepted' ? '#1C8A4D' : a.status==='rejected' ? '#C7402C' : '#fff';
+  go('view-emp-applicant');
+}
+
+function decideApplicant(decision){
+  const a = applicantsData.find(x=>x.id===currentApplicantId);
+  if(!a) return;
+  a.status = decision;
+  toast(decision==='accepted' ? `${a.name} accepted!` : `${a.name} rejected`);
+  renderEmpOverview();
+  renderApplicantsList();
+  setTimeout(()=> go(applicantReturnView), 500);
+}
+
+// ============== EMPLOYER REVIEWS ==============
+let empReviews = [
+  { name:'Sarah M.', initials:'SM', color:'var(--blue)', stars:'★★★★★', rating:5, date:'2 weeks ago', text:'Clear instructions, supervisor checked in regularly, and pay arrived exactly on time. Would work with them again.', flagged:false },
+  { name:'Rizal A.', initials:'RA', color:'var(--emp-deep)', stars:'★★★★☆', rating:4, date:'3 weeks ago', text:'Good experience overall. Briefing was a little rushed on day one but the team sorted it out quickly.', flagged:false },
+  { name:'Wei Jie T.', initials:'WJ', color:'#5B7FE0', stars:'★★☆☆☆', rating:2, date:'1 month ago', text:'Shift ran almost 2 hours over the agreed time and nobody mentioned overtime pay beforehand. Had to ask twice.', flagged:true },
+  { name:'Farah I.', initials:'FI', color:'var(--blue-deep)', stars:'★★★★★', rating:5, date:'1 month ago', text:'Loved the team energy, very welcoming to first-timers and the venue was easy to find.', flagged:false },
+  { name:'Nabil H.', initials:'NH', color:'var(--yellow-deep)', stars:'★★★☆☆', rating:3, date:'2 months ago', text:'Decent job but communication on WhatsApp was slow — waited a day for a reply about my schedule change.', flagged:false },
+  { name:'Chong Wei', initials:'CW', color:'#1C8A4D', stars:'★☆☆☆☆', rating:1, date:'2 months ago', text:'Promised RM150 flat but was only paid RM100, no clear explanation given when I followed up. Disappointing.', flagged:true }
+];
+
+function renderEmpReviewsBarChart(chartId, avgId, countId, flagId){
+  const dist = [5,4,3,2,1].map(star => empReviews.filter(r=>r.rating===star).length);
+  const max = Math.max(...dist, 1);
+  const avg = (empReviews.reduce((s,r)=>s+r.rating,0) / empReviews.length).toFixed(1);
+  document.getElementById(avgId).textContent = avg+'★';
+  document.getElementById(countId).textContent = empReviews.length;
+  document.getElementById(flagId).textContent = empReviews.filter(r=>r.flagged).length;
+  document.getElementById(chartId).innerHTML = [5,4,3,2,1].map((star,i)=>`
+    <div class="bar-row">
+      <span class="blabel">${star}★</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${dist[i]/max*100}%;"></div></div>
+      <span class="bcount">${dist[i]}</span>
+    </div>`).join('');
+}
+
+function renderEmpReviewsList(){
+  renderEmpReviewsBarChart('rv2-bar-chart','rv2-avg','rv2-count','rv2-flagged');
+  document.getElementById('emp-reviews-list').innerHTML = empReviews.map(r=>`
+    <div class="review-card ${r.flagged?'flagged':''}">
+      <div class="rc-top">
+        <div class="avatar-circle" style="background:${r.color};">${r.initials}</div>
+        <div><div class="rc-name">${r.name}</div><div class="rc-role">Worked an event with you</div></div>
+        <div class="rc-stars">${r.stars}</div>
+      </div>
+      <div class="rc-text">${r.text}</div>
+      <div class="rc-date">${r.date}</div>
+      ${r.flagged ? `<div class="rc-flag"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#C7402C" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/></svg>Needs your attention</div>` : ''}
+      <button class="rc-reply-btn" onclick="toast('Reply sent to ${r.name}')">Reply</button>
+    </div>`).join('');
+}
+
+// ============== INIT ==============
+renderFeed();
+renderSearch();
+renderApplications();
+renderFavourites();
+renderReviews();
+updateTileCounts();
+showDetail('bookfest', 'view-home');
+renderChat();
+renderEmpEvents();
+renderEmpFullEvents();
+renderEmpOverview();
+renderApplicantsList();
+renderEmpReviewsList();
+renderShowcaseProviders();
+renderMyShowcaseServices();
+renderMyHiredShowcasers();
+renderEmpShowcaseProviders();
+renderEmpHiredShowcasers();
+initCarousel();
+// Start on the role-select screen (init pre-loads other views above)
+go('view-role');
+</script>
+</body>
+</html>
